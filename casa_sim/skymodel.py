@@ -56,16 +56,16 @@ def resolve_sky_model(cfg: "SimConfig", ia, cl, qa, me) -> str:
     # ---- Sub-stage 4a: Base model ----------------------------------------
 
     if sm_cfg.mode == 'component_list':
-        if effective_predictor in ('ft_dft', 'sm_predict'):
-            # Both ft_dft and sm_predict use the .cl directly — no image needed
+        needs_image = (sm_cfg.faraday and sm_cfg.faraday.enabled) or sm_cfg.spectral_lines
+        if effective_predictor in ('ft_dft', 'sm_predict') and not needs_image:
+            # Use the .cl directly — no image needed
             log.info("[skymodel] 4a: component_list + %s → returning cl path: %s",
                      effective_predictor, sm_cfg.cl_path)
-            # Apply Stokes spectral variation if specified
             if sm_cfg.cl_stokes_spectrum:
                 _apply_cl_stokes_spectrum(sm_cfg, cl)
             return sm_cfg.cl_path
 
-        # mosaic or awproject: evaluate component list onto an image
+        # Faraday/spectral-line path or mosaic/awproject: evaluate CL onto an image
         fromcl_path = f"{cfg.name}_skymodel_fromcl.im"
         _make_empty_image(cfg, ia, qa, fromcl_path)
         _eval_complist(sm_cfg.cl_path, fromcl_path, cl, ia)
