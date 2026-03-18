@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "casa-sim"
+version = "0.1.0"
+description = "CASA-based radio interferometry simulation framework"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=1.26",
+    "astropy>=6.0",
+    "pyyaml>=6.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["casa_sim*"]

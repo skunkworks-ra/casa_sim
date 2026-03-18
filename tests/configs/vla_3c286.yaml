@@ -1,0 +1,57 @@
+name: sim_vla_3c286
+
+observatory:
+  mode: canned
+  feeds: "perfect R L"
+  canned:
+    telescope: VLA
+    cfg_file: null
+    antlist: [W01, W02, W03, W04, E01, E02, E03, E04, N01, N02, N03, N04]
+
+observation:
+  epoch: "UTC 2024/06/15/06:00:00"
+  integration_time: "2000s"
+  use_hourangle: true
+  fields:
+    - name: 3C286
+      direction: "J2000 13h31m08.2899s +30d30m32.959s"
+  spws:
+    - name: LBand
+      freq: "1.4GHz"
+      deltafreq: "0.2GHz"
+      nchan: 5
+      stokes: "RR RL LR LL"
+  observe_calls:
+    - field: 3C286
+      spw: LBand
+      start_time: "-2.0h"
+      stop_time: "+2.0h"
+
+sky_model:
+  stokes: IQUV
+  mode: component_list
+  cl_path: tests/data/3c286_lband.cl
+
+prediction:
+  gridder: standard
+  predictor: sm_predict
+  cell: "9arcsec"
+  imsize: 256
+  normtype: flatsky
+
+corruption:
+  seed: 42
+  noise:
+    enabled: true
+    mode: simplenoise
+    value: "0.05Jy"
+  gains:
+    enabled: false
+    mode: fbm
+    amplitude: 0.0
+
+imaging:
+  enabled: true
+  deconvolver: hogbom
+  pbcor: false
+  niter: 500

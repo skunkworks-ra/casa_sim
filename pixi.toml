@@ -1,0 +1,24 @@
+[workspace]
+name        = "casa_sim"
+version     = "0.1.0"
+description = "CASA-based radio interferometry simulation framework"
+channels    = ["conda-forge"]
+platforms   = ["linux-64"]
+
+[dependencies]
+python   = ">=3.12,<3.13"
+pip      = ">=24"
+numpy    = ">=1.26"
+astropy  = ">=6.0"
+pyyaml   = ">=6.0"
+
+[pypi-dependencies]
+casa-sim   = { path = ".", editable = true }
+casatools  = ">=6.6"
+casatasks  = ">=6.6"
+
+[tasks]
+simulate  = { cmd = "python simulate.py" }
+test      = { cmd = "python tests/run_all.py" }
+test-3c286 = { cmd = "python tests/integration/test_3c286.py" }
+test-vla  = { cmd = "python tests/integration/test_vla_basic.py" }

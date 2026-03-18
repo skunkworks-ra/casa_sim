@@ -1,0 +1,62 @@
+name: sim_vla_noisesweep
+
+observatory:
+  mode: canned
+  feeds: "perfect R L"
+  canned:
+    telescope: VLA
+    cfg_file: null
+    antlist: [W01, W02, W03, E01, E02, E03, N01, N02, N03]
+
+observation:
+  epoch: "UTC 2020/10/4/00:00:00"
+  integration_time: "30s"
+  use_hourangle: true
+  fields:
+    - name: src1
+      direction: "J2000 19h59m28.5s +40d40m00.0s"
+  spws:
+    - name: LBand
+      freq: "1.0GHz"
+      deltafreq: "0.2GHz"
+      nchan: 5
+      stokes: "RR LL"
+  observe_calls:
+    - field: src1
+      spw: LBand
+      start_time: "-60s"
+      stop_time: "+60s"
+
+sky_model:
+  stokes: I
+  mode: component_list
+  cl_path: tests/data/point_source_1Jy.cl
+
+prediction:
+  gridder: standard
+  predictor: auto
+  cell: null
+  imsize: null
+  normtype: flatsky
+
+corruption:
+  seed: 42
+  noise:
+    enabled: true
+    mode: simplenoise
+    value: "0.1Jy"
+  gains:
+    enabled: false
+    mode: fbm
+    amplitude: 0.0
+
+imaging:
+  enabled: true
+  deconvolver: hogbom
+  pbcor: false
+  niter: 500
+
+sweep:
+  axes:
+    - parameter: corruption.noise.value
+      values: ["0.01Jy", "0.1Jy", "1.0Jy"]

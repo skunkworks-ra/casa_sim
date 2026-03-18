@@ -1,0 +1,59 @@
+# MS output files
+*.ms/
+*.ms
+
+# CASA image directories
+*.im/
+*.im
+*.image/
+*.image
+*.residual/
+*.residual
+*.pb/
+*.pb
+*.psf/
+*.psf
+*.model/
+*.model
+*.sumwt/
+*.sumwt
+*.weight/
+*.weight
+
+# Component lists
+sim_*.cl/
+sim_*.cl
+
+# Intermediate sky model images
+*_skymodel_*.im/
+*_skymodel_*.im
+sim_predict*/
+
+# Temporary CASA files
+tmp_addedcol.ms/
+tmp_addedcol.ms
+obslist.txt
+
+# Sweep outputs
+*_sweep_index.json
+*_sanity.json
+
+# Reference MS files (JSON references ARE committed)
+tests/reference/ms/
+
+# Runtime outputs
+outputs/
+
+# pixi / packaging
+.pixi/
+*.egg-info/
+dist/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.eggs/
+
+# Jupyter
+.ipynb_checkpoints/
