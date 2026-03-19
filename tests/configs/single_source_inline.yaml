@@ -1,0 +1,66 @@
+name: sim_single_source_inline
+
+observatory:
+  mode: canned
+  feeds: "perfect R L"
+  canned:
+    telescope: VLA
+    cfg_file: null
+    antlist: null
+
+observation:
+  epoch: "UTC 2020/10/4/00:00:00"
+  integration_time: "2000s"
+  use_hourangle: true
+  fields:
+    - name: src1
+      direction: "J2000 19h59m28.5s +40d40m00.0s"
+  spws:
+    - name: LBand
+      freq: "1.0GHz"
+      deltafreq: "0.05GHz"
+      nchan: 10
+      stokes: "RR RL LR LL"
+  observe_calls:
+    - field: src1
+      spw: LBand
+      start_time: "-5.0h"
+      stop_time: "+5.0h"
+
+sky_model:
+  stokes: IQUV
+  mode: component_list
+  sources:
+    - name: pol_src
+      direction: "J2000 19h59m28.5s +40d40m00.0s"
+      flux: [1.0]
+      ref_freq: "1.25GHz"
+      spectral_index: [0.0]
+      shape: point
+      rm: 50.0
+      frac_pol: 0.316
+      chi: 9.2
+
+prediction:
+  gridder: standard
+  predictor: sm_predict
+  cell: null
+  imsize: null
+  normtype: flatsky
+
+corruption:
+  seed: 42
+  noise:
+    enabled: true
+    mode: simplenoise
+    value: "0.01Jy"
+  gains:
+    enabled: false
+    mode: fbm
+    amplitude: 0.0
+
+imaging:
+  enabled: true
+  deconvolver: hogbom
+  pbcor: false
+  niter: 500

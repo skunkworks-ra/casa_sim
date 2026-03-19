@@ -237,9 +237,10 @@ def _estimate_rm(imagename: str, cfg: "SimConfig", ia) -> float:
     Q_spec = pix[px, py, q_idx, :]
     U_spec = pix[px, py, u_idx, :]
 
-    # PA per channel
-    PA = 0.5 * np.arctan2(U_spec, Q_spec)
-    PA_unwrapped = np.unwrap(PA)
+    # PA per channel — unwrap in 2*PA domain (2π periodicity) to handle nπ ambiguity
+    two_PA = np.arctan2(U_spec, Q_spec)       # 2χ, range [-π, π]
+    two_PA_unwrapped = np.unwrap(two_PA)       # unwrap with default period=2π
+    PA_unwrapped = two_PA_unwrapped / 2.0      # back to PA
 
     # lambda^2 per channel
     chan_freqs = _get_chan_freqs_from_csys(csys, shp[3])

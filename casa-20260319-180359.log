@@ -1,0 +1,396 @@
+2026-03-19 18:03:59	INFO	::casa	
+2026-03-19 18:03:59	INFO	::casa	data_update: version installed or checked less than 1 day(s) ago, nothing updated or checked
+2026-03-19 18:03:59	INFO	::casa	measures_update: version installed or checked less than 1 day(s) ago, nothing updated or checked
+2026-03-19 18:03:59	INFO	::casa	
+2026-03-19 18:04:00	INFO	::casa	Python version 3.12.13
+2026-03-19 18:04:00	INFO	::casa	CASA Version MODULAR 6.7.3.21
+2026-03-19 18:04:00	INFO	readantenna::readantenna::casa	Reading antenna positions from '/home/arpan/.casa/data/alma/simmos/vla.d.cfg'
+2026-03-19 18:04:00	INFO	readantenna::NewMSSimulator::initAnt() 	Using global coordinates for the antennas
+2026-03-19 18:04:00	INFO	readantenna::NewMSSimulator::initAnt() 	Added rows to ANTENNA table
+2026-03-19 18:04:00	INFO	readantenna::MSsimulator::initFeeds() 	Added rows to FEED table
+2026-03-19 18:04:00	INFO	readantenna::MSsimulator::initSpWindows() 	Creating new spectral window LBand, ID 1
+2026-03-19 18:04:00	INFO	readantenna::simulator::settimes()	Times 
+2026-03-19 18:04:00	INFO	readantenna::simulator::settimes()+	     Integration time 2000s
+2026-03-19 18:04:00	INFO	readantenna::simulator::settimes()	     Times will be interpreted as hour angles for first source
+2026-03-19 18:04:00	INFO	readantenna::NewMSSimulator::observe()	First source: src1 @ 19:59:28.50   +40.40.00.00       J2000
+2026-03-19 18:04:00	INFO	readantenna::NewMSSimulator::observe()+	Full time range: 03-Oct-2020/21:18:42.9 -- 04-Oct-2020/07:18:42.9 TAI with int = 2000
+2026-03-19 18:04:00	INFO	readantenna::NewMSSimulator::observe()	Calculating a total of 18 integrations
+2026-03-19 18:04:00	INFO	readantenna::Simulator::reset() 	Resetting all visibility corruption components
+2026-03-19 18:04:00	INFO	readantenna::Simulator::reset() 	Reset all image-plane corruption components
+2026-03-19 18:04:00	INFO	flagdata::::casa	##########################################
+2026-03-19 18:04:00	INFO	flagdata::::casa	##### Begin Task: flagdata           #####
+2026-03-19 18:04:00	INFO	flagdata::::casa	flagdata( vis='sim_single_source_inline.ms', mode='unflag', autocorr=False, inpfile='', reason='any', tbuff=0.0, spw='', field='', antenna='', uvrange='', timerange='', correlation='', scan='', intent='', array='', observation='', feed='', clipminmax=[], datacolumn='DATA', clipoutside=True, channelavg=False, chanbin=1, timeavg=False, timebin='0s', clipzeros=False, quackinterval=1.0, quackmode='beg', quackincrement=False, tolerance=0.0, addantenna='', lowerlimit=0.0, upperlimit=90.0, ntime='scan', combinescans=False, timecutoff=4.0, freqcutoff=3.0, timefit='line', freqfit='poly', maxnpieces=7, flagdimension='freqtime', usewindowstats='none', halfwin=1, extendflags=True, winsize=3, timedev='', freqdev='', timedevscale=5.0, freqdevscale=5.0, spectralmax=1000000.0, spectralmin=0.0, antint_ref_antenna='', minchanfrac=0.6, verbose=False, extendpols=True, growtime=50.0, growfreq=50.0, growaround=False, flagneartime=False, flagnearfreq=False, minrel=0.0, maxrel=1.0, minabs=0, maxabs=-1, spwchan=False, spwcorr=False, basecnt=False, fieldcnt=False, name='Summary', action='apply', display='', flagbackup=True, savepars=False, cmdreason='', outfile='', overwrite=True, writeflags=True )
+2026-03-19 18:04:00	INFO	flagdata::::casa	Backup original flags before applying new flags
+2026-03-19 18:04:00	INFO	AgentFlagger::open	Table type is Measurement Set
+2026-03-19 18:04:00	INFO	FlagVersion::saveFlagVersion	Creating new backup flag file called flagdata_1
+2026-03-19 18:04:00	INFO	AgentFlagger::open	Table type is Measurement Set
+2026-03-19 18:04:00	INFO	flagdata::::casa	Unflag mode is active
+2026-03-19 18:04:00	INFO	flagdata::::casa	Initializing the agents
+2026-03-19 18:04:00	INFO	AgentFlagger::initAgents	There are initially 1 agents in the list. Agents: unflag
+2026-03-19 18:04:00	INFO	AgentFlagger::initAgents	There are 1 valid agents in the list. Agents: unflag
+2026-03-19 18:04:00	INFO	flagdata::::casa	Running the agentflagger tool
+2026-03-19 18:04:00	INFO	FlagMSHandler::	Chunk = 1 [progress: 100%], Observation = 0, Array = 0, Scan = 1, Field = 0 (src1), Spw = 0, Channels = 10, Corrs = [ RR RL LR LL ], Total Rows = 6318
+2026-03-19 18:04:00	INFO	Unflag::chunkSummary	=> Data unflagged so far 100% (252720/252720)
+2026-03-19 18:04:00	INFO	FlagMSHandler::nextChunk 	==================================================================================== 
+2026-03-19 18:04:00	INFO	Unflag::tableSummary	=> Percentage of data un-flagged in table selection: 100%
+2026-03-19 18:04:00	INFO	AgentFlagger::run	=> Writing flags to the MS
+2026-03-19 18:04:00	INFO	flagdata::::casa	Task flagdata complete. Start time: 2026-03-19 12:04:00.308329 End time: 2026-03-19 12:04:00.361215
+2026-03-19 18:04:00	INFO	flagdata::::casa	##### End Task: flagdata             #####
+2026-03-19 18:04:00	INFO	flagdata::::casa	##########################################
+2026-03-19 18:04:00	INFO	ImageFactory::createImage	Created Paged image 'sim_single_source_inline_skymodel_fromcl.im' of shape [256, 256, 4, 10] with float valued pixels.
+2026-03-19 18:04:00	INFO	ComponentListImage::_computePointSourcePixelValues	Found 1 of 1 point sources located within the image and cached their pixel coordinates.
+2026-03-19 18:04:01	INFO	ImageFactory::createImage	Created Paged image 'sim_single_source_inline_skymodel_faraday.im' of shape [256, 256, 4, 10] with float valued pixels.
+2026-03-19 18:04:01	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	Opening MeasurementSet /home/arpan/casa_sim/sim_single_source_inline.ms with 6318 rows
+2026-03-19 18:04:01	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	   last spectral window ID = 1
+2026-03-19 18:04:01	WARN	simulator::predict	sm.predict will overwrite the brightness unit  in your image sim_single_source_inline_skymodel_faraday.im
+2026-03-19 18:04:01	INFO	Simulator::predict() 	Predicting visibilities using model: [sim_single_source_inline_skymodel_faraday.im] and componentList: 
+2026-03-19 18:04:01	INFO	Simulator::predict() 	The data column will be replaced
+2026-03-19 18:04:01	INFO	Simulator::createSkyEquation() 	Opening model 0 named sim_single_source_inline_skymodel_faraday.im
+2026-03-19 18:04:01	INFO	Simulator::getVPRecord 	Using default Voltage Patterns from the VPManager
+2026-03-19 18:04:01	INFO	Simulator::getVPRecord 	Temporary alert : The state of the vpmanager tool has been modified by loading these primary beam models. If any of your scripts rely on the vpmanager state being preserved throughout your CASA session, please use vp.saveastable() and vp.loadfromtable() as needed. 
+2026-03-19 18:04:01	INFO	Simulator::createSkyEquation() 	Synthesis gridding 
+2026-03-19 18:04:01	INFO	Simulator::createSkyEquation() 	Fourier transforms will use image centers as tangent points
+2026-03-19 18:04:02	INFO	Simulator::reset() 	Resetting all visibility corruption components
+2026-03-19 18:04:02	INFO	Simulator::reset() 	Reset all image-plane corruption components
+2026-03-19 18:04:02	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	Opening MeasurementSet /home/arpan/casa_sim/sim_single_source_inline.ms with 6318 rows
+2026-03-19 18:04:02	INFO	NewMSSimulator::NewMSSimulator(MeasurementSet& theMS) 	   last spectral window ID = 1
+2026-03-19 18:04:02	INFO	Simulator::setnoise2() 	Using simple noise model with noise level of 0.01 Jy
+2026-03-19 18:04:02	INFO	Simulator::create_corrupt() 	Creating A NOISE Calibration structure for data corruption.
+2026-03-19 18:04:02	INFO	SVC::sizeUpSim() 	For simint = integration, found 1 solution intervals.
+2026-03-19 18:04:02	INFO	SVC[A Noise]::setSimulate() 	calTable name not set - not writing to disk (note: OTF sim - not creating Calset either)
+2026-03-19 18:04:02	INFO	Simulator::corrupt() 	Doing visibility corruption.
+2026-03-19 18:04:02	INFO	Simulator::corrupt() 	simulated A Noise: output table=<none> simint=integration t=0spwok = [1] in correct mode.
+2026-03-19 18:04:02	INFO	Simulator::reset() 	Resetting all visibility corruption components
+2026-03-19 18:04:02	INFO	Simulator::reset() 	Reset all image-plane corruption components
+2026-03-19 18:04:02	INFO	tclean::::casa	##########################################
+2026-03-19 18:04:02	INFO	tclean::::casa	##### Begin Task: tclean             #####
+2026-03-19 18:04:02	INFO	tclean::::casa	tclean( vis='sim_single_source_inline.ms', selectdata=True, field='', spw='', timerange='', uvrange='', antenna='', scan='', observation='', intent='', datacolumn='data', imagename='sim_single_source_inline_sanity', imsize=256, cell='9.802arcsec', phasecenter='', stokes='IQUV', projection='SIN', startmodel='', specmode='cube', reffreq='', nchan=-1, start='', width='', outframe='LSRK', veltype='radio', restfreq=[], interpolation='linear', perchanweightdensity=True, gridder='standard', facets=1, psfphasecenter='', wprojplanes=1, vptable='', mosweight=True, aterm=True, psterm=False, wbawp=True, conjbeams=False, cfcache='', usepointing=False, computepastep=360.0, rotatepastep=360.0, pointingoffsetsigdev=[], pblimit=0.05, normtype='flatsky', deconvolver='hogbom', scales=[], nterms=2, smallscalebias=0.0, fusedthreshold=0.0, largestscale=-1, restoration=True, restoringbeam=[], pbcor=False, outlierfile='', weighting='natural', robust=0.5, noise='1.0Jy', npixels=0, uvtaper=[''], niter=500, gain=0.1, threshold=0.0, nsigma=0.0, cycleniter=-1, cyclefactor=1.0, minpsffraction=0.05, maxpsffraction=0.8, interactive=False, nmajor=-1, fullsummary=False, usemask='user', mask='', pbmask=0.0, sidelobethreshold=3.0, noisethreshold=5.0, lownoisethreshold=1.5, negativethreshold=0.0, smoothfactor=1.0, minbeamfrac=0.3, cutthreshold=0.01, growiterations=75, dogrowprune=True, minpercentchange=-1.0, verbose=False, fastnoise=True, restart=True, savemodel='none', calcres=True, calcpsf=True, psfcutoff=0.35, parallel=False )
+2026-03-19 18:04:02	INFO	tclean::::casa	Verifying Input Parameters
+2026-03-19 18:04:02	INFO	SynthesisImagerVi2::selectData 	MS : sim_single_source_inline.ms | [Opened in readonly mode]
+2026-03-19 18:04:02	INFO	SynthesisImagerVi2::selectData 	  NRows selected : 6318
+2026-03-19 18:04:03	INFO	SynthesisImagerVi2::defineImage 	Define image coordinates for [sim_single_source_inline_sanity] : 
+2026-03-19 18:04:03	INFO	SynthesisImagerVi2::defineImage 	Define image coordinates for [sim_single_source_inline_sanity] : 
+2026-03-19 18:04:03	INFO	MSTransformRegridder::calcChanFreqs	 phaseCenter='Direction: [0.377751, -0.657759, 0.651657]'  Channels equidistant in freq
+2026-03-19 18:04:03	INFO	MSTransformRegridder::calcChanFreqs+	 Central frequency (in output frame) = 1.22498e+09 Hz
+2026-03-19 18:04:03	INFO	MSTransformRegridder::calcChanFreqs+	 Width of central channel (in output frame) = 4.9999e+07 Hz
+2026-03-19 18:04:03	INFO	MSTransformRegridder::calcChanFreqs+	 Number of channels = 10
+2026-03-19 18:04:03	INFO	MSTransformRegridder::calcChanFreqs+	 Total width of SPW (in output frame) = 4.9999e+08 Hz
+2026-03-19 18:04:03	INFO	MSTransformRegridder::calcChanFreqs+	 Lower edge = 9.74981e+08 Hz, upper edge = 1.47497e+09 Hz
+2026-03-19 18:04:03	INFO	SynthesisImagerVi2::defineImage 	Impars: start 
+2026-03-19 18:04:03	INFO	SynthesisImagerVi2::defineImage 	Shape: [256, 256, 4, 10] Spectral: [9.9998e+08] at [0] with increment [4.9999e+07]
+2026-03-19 18:04:03	INFO	SynthesisImagerVi2::defineImage 	Set Gridding options for [sim_single_source_inline_sanity] with ftmachine : gridft
+2026-03-19 18:04:03	INFO	SynthesisImagerVi2::nSubCubeFitInMemory	Required memory: 0.1511 GB. Available mem.: 14.8 GB (rc, mem. fraction: 80%, memory: -) => Subcubes: 1. Processes on node: 1.
+2026-03-19 18:04:03	INFO	tclean::::casa	CFCache already exists
+2026-03-19 18:04:03	INFO	SynthesisImagerVi2::weight() 	Set imaging weights : Natural weighting
+2026-03-19 18:04:03	INFO	task_tclean::SynthesisDeconvolver::setupDeconvolution 	Set Deconvolution Options for [sim_single_source_inline_sanity] : hogbom
+2026-03-19 18:04:03	INFO	task_tclean::SynthesisImager::makePSF 	----------------------------------------------------------- Make PSF ---------------------------------------------
+2026-03-19 18:04:03	INFO	task_tclean::SynthesisImagerVi2::nSubCubeFitInMemory	Required memory: 0.1511 GB. Available mem.: 14.8 GB (rc, mem. fraction: 80%, memory: -) => Subcubes: 1. Processes on node: 1.
+2026-03-19 18:04:03	INFO	task_tclean::SynthesisImagerVi2::selectData 	MS : sim_single_source_inline.ms | [Opened in readonly mode]
+2026-03-19 18:04:03	INFO	task_tclean::SynthesisImagerVi2::selectData 	  NRows selected : 6318
+2026-03-19 18:04:03	INFO	task_tclean::SynthesisImagerVi2::weight() 	Set imaging weights : Natural weighting
+2026-03-19 18:04:03	INFO	task_tclean::SynthesisImager::makePSF 	----------------------------------------------------------- Make PSF ---------------------------------------------
+2026-03-19 18:04:07	INFO	task_tclean::SynthesisImagerVi2::makePrimaryBeam 	vi2 : Evaluating Primary Beam model onto image grid(s)
+2026-03-19 18:04:07	INFO	task_tclean::SIImageStore::calcSensitivity 	[sim_single_source_inline_sanity] Theoretical sensitivity (Jy/bm):c0:p0:0.053376 c1:p0:0.0125809 c2:p0:0.0125809 c3:p0:0.0125809 c4:p0:0.0125809 c5:p0:0.0125809 c6:p0:0.0125809 c7:p0:0.0125809 c8:p0:0.0125809 c9:p0:0.0125809 c0:p1:0.053376 c1:p1:0.0125809 c2:p1:0.0125809 c3:p1:0.0125809 c4:p1:0.0125809 c5:p1:0.0125809 c6:p1:0.0125809 c7:p1:0.0125809 c8:p1:0.0125809 c9:p1:0.0125809 c0:p2:0.053376 c1:p2:0.0125809 c2:p2:0.0125809 c3:p2:0.0125809 c4:p2:0.0125809 c5:p2:0.0125809 c6:p2:0.0125809 c7:p2:0.0125809 c8:p2:0.0125809 c9:p2:0.0125809 c0:p3:0.053376 c1:p3:0.0125809 c2:p3:0.0125809 c3:p3:0.0125809 c4:p3:0.0125809 c5:p3:0.0125809 c6:p3:0.0125809 c7:p3:0.0125809 c8:p3:0.0125809 c9:p3:0.0125809 
+2026-03-19 18:04:07	INFO	task_tclean::SIImageStore::getPSFGaussian 	Time to fit Gaussian to PSF 0.217307
+2026-03-19 18:04:07	INFO	task_tclean::SIImageStore::printBeamSet 	Restoring Beams 
+2026-03-19 18:04:07	INFO	task_tclean::SIImageStore::printBeamSet +	Pol   Type Chan     Freq   Vel
+2026-03-19 18:04:07	INFO	task_tclean::SIImageStore::printBeamSet +	  I    Max    0 1.00e+09     6  129.2265 arcsec x   76.8918 arcsec pa=-75.1958 deg
+2026-03-19 18:04:07	INFO	task_tclean::SIImageStore::printBeamSet +	  I    Min    9 1.45e+09 -134898   61.0875 arcsec x   53.5342 arcsec pa=-89.6226 deg
+2026-03-19 18:04:07	INFO	task_tclean::SIImageStore::printBeamSet +	  I Median    4 1.20e+09 -59951   73.8793 arcsec x   64.7111 arcsec pa=-89.6378 deg
+2026-03-19 18:04:07	INFO	task_tclean::SIImageStore::printBeamSet +	  Q    Max    0 1.00e+09     6  129.2265 arcsec x   76.8918 arcsec pa=-75.1958 deg
+2026-03-19 18:04:07	INFO	task_tclean::SIImageStore::printBeamSet +	  Q    Min    9 1.45e+09 -134898   61.0875 arcsec x   53.5342 arcsec pa=-89.6226 deg
+2026-03-19 18:04:07	INFO	task_tclean::SIImageStore::printBeamSet +	  Q Median    4 1.20e+09 -59951   73.8793 arcsec x   64.7111 arcsec pa=-89.6378 deg
+2026-03-19 18:04:07	INFO	task_tclean::SIImageStore::printBeamSet +	  U    Max    0 1.00e+09     6  129.2265 arcsec x   76.8918 arcsec pa=-75.1958 deg
+2026-03-19 18:04:07	INFO	task_tclean::SIImageStore::printBeamSet +	  U    Min    9 1.45e+09 -134898   61.0875 arcsec x   53.5342 arcsec pa=-89.6226 deg
+2026-03-19 18:04:07	INFO	task_tclean::SIImageStore::printBeamSet +	  U Median    4 1.20e+09 -59951   73.8793 arcsec x   64.7111 arcsec pa=-89.6378 deg
+2026-03-19 18:04:07	INFO	task_tclean::SIImageStore::printBeamSet +	  V    Max    0 1.00e+09     6  129.2265 arcsec x   76.8918 arcsec pa=-75.1958 deg
+2026-03-19 18:04:07	INFO	task_tclean::SIImageStore::printBeamSet +	  V    Min    9 1.45e+09 -134898   61.0875 arcsec x   53.5342 arcsec pa=-89.6226 deg
+2026-03-19 18:04:07	INFO	task_tclean::SIImageStore::printBeamSet +	  V Median    4 1.20e+09 -59951   73.8793 arcsec x   64.7111 arcsec pa=-89.6378 deg
+2026-03-19 18:04:08	INFO	task_tclean::SynthesisImager::executeMajorCycle 	----------------------------------------------------------- Run Major Cycle 1 -------------------------------------
+2026-03-19 18:04:08	INFO	task_tclean::SynthesisImagerVi2::nSubCubeFitInMemory	Required memory: 0.1511 GB. Available mem.: 14.75 GB (rc, mem. fraction: 80%, memory: -) => Subcubes: 1. Processes on node: 1.
+2026-03-19 18:04:08	INFO	task_tclean::SynthesisImagerVi2::selectData 	MS : sim_single_source_inline.ms | [Opened in readonly mode]
+2026-03-19 18:04:08	INFO	task_tclean::SynthesisImagerVi2::selectData 	  NRows selected : 6318
+2026-03-19 18:04:08	INFO	task_tclean::SynthesisImagerVi2::weight() 	Set imaging weights : Natural weighting
+2026-03-19 18:04:08	INFO	task_tclean::SynthesisImager::executeMajorCycle 	----------------------------------------------------------- Run Major Cycle 1 -------------------------------------
+2026-03-19 18:04:11	INFO	task_tclean::SynthesisDeconvolver::initMinorCycle 	 Absolute Peak residual within mask : 0, over full image : 1.00012
+2026-03-19 18:04:11	INFO	SynthesisDeconvolver::setupMask 	[sim_single_source_inline_sanity] Initializing new mask to 1.0 for the full image
+2026-03-19 18:04:11	INFO	SynthesisDeconvolver::setupMask 	[sim_single_source_inline_sanity] Number of pixels in the clean mask : 2.62144e+06 out of a total of 2.62144e+06 pixels. [ 100 % ]
+2026-03-19 18:04:11	INFO	SynthesisDeconvolver::initMinorCycle 	 Absolute Peak residual within mask : 1.00012, over full image : 1.00012
+2026-03-19 18:04:11	INFO	tclean::::casa	Minor Cycle controls : {'cycleniter': 500, 'cyclethreshold': 0.3670010268688202, 'loopgain': 0.10000000149011612, 'nsigma': 0.0, 'thresholdreached': False}
+2026-03-19 18:04:11	INFO	SynthesisDeconvolver::executeCubeMinorCycle 	---------------------------------------------------- Run Minor Cycle Iterations  ---------------------------------------------
+2026-03-19 18:04:11	INFO	SynthesisDeconvolver::setupDeconvolution 	Set Deconvolution Options for [sim_single_source_inline_sanity] : hogbom
+2026-03-19 18:04:11	INFO	SynthesisDeconvolver::initMinorCycle 	 Absolute Peak residual within mask : 1.00012, over full image : 1.00012
+2026-03-19 18:04:11	INFO	CubeMinorCycleAlgorithm::task 	Processing channels in range [0, 9]
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity] Run Hogbom minor-cycle on 10 chans 4 pols | CycleThreshold=0.367001, CycleNiter=500, Gain=0.1
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C0:P0] iters=0->10 [10], model=0->0.650954, peakres=0.999436->0.348482, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C0:P1] iters=10->10 [0], model=0->0, peakres=0.289169->0.289169, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C0:P2] iters=10->10 [0], model=0->0, peakres=0.127427->0.127427, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C0:P3] iters=10->10 [0], model=0->0, peakres=0.0014802->0.0014802, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C1:P0] iters=10->20 [10], model=0->0.651346, peakres=1.00004->0.348691, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C1:P1] iters=20->20 [0], model=0->0, peakres=0.288471->0.288471, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C1:P2] iters=20->20 [0], model=0->0, peakres=0.128994->0.128994, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C1:P3] iters=20->20 [0], model=0->0, peakres=0.000363907->0.000363907, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C2:P0] iters=20->30 [10], model=0->0.651318, peakres=0.999994->0.348676, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C2:P1] iters=30->30 [0], model=0->0, peakres=0.130596->0.130596, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C2:P2] iters=30->30 [0], model=0->0, peakres=0.287749->0.287749, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C2:P3] iters=30->30 [0], model=0->0, peakres=0.000349757->0.000349757, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C3:P0] iters=30->40 [10], model=0->0.651352, peakres=1.00005->0.348695, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C3:P1] iters=40->40 [0], model=0->0, peakres=0.0645728->0.0645728, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C3:P2] iters=40->40 [0], model=0->0, peakres=0.309331->0.309331, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C3:P3] iters=40->40 [0], model=0->0, peakres=0.000347341->0.000347341, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C4:P0] iters=40->50 [10], model=0->0.651327, peakres=1.00001->0.348681, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C4:P1] iters=50->50 [0], model=0->0, peakres=0.217772->0.217772, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C4:P2] iters=50->50 [0], model=0->0, peakres=0.228978->0.228978, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C4:P3] iters=50->50 [0], model=0->0, peakres=0.000361898->0.000361898, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C5:P0] iters=50->60 [10], model=0->0.651399, peakres=1.00012->0.34872, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C5:P1] iters=60->60 [0], model=0->0, peakres=0.299843->0.299843, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C5:P2] iters=60->60 [0], model=0->0, peakres=0.0997486->0.0997486, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C5:P3] iters=60->60 [0], model=0->0, peakres=0.000424835->0.000424835, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C6:P0] iters=60->70 [10], model=0->0.651259, peakres=0.999904->0.348645, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C6:P1] iters=70->70 [0], model=0->0, peakres=0.313991->0.313991, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C6:P2] iters=70->70 [0], model=0->0, peakres=0.0355703->0.0355703, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C6:P3] iters=70->70 [0], model=0->0, peakres=0.000374224->0.000374224, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C7:P0] iters=70->80 [10], model=0->0.651349, peakres=1.00004->0.348693, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C7:P1] iters=80->80 [0], model=0->0, peakres=0.277401->0.277401, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C7:P2] iters=80->80 [0], model=0->0, peakres=0.151343->0.151343, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C7:P3] iters=80->80 [0], model=0->0, peakres=0.000402347->0.000402347, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C8:P0] iters=80->90 [10], model=0->0.651298, peakres=0.999965->0.348666, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C8:P1] iters=90->90 [0], model=0->0, peakres=0.209645->0.209645, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C8:P2] iters=90->90 [0], model=0->0, peakres=0.236442->0.236442, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C8:P3] iters=90->90 [0], model=0->0, peakres=0.000378943->0.000378943, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C9:P0] iters=90->100 [10], model=0->0.651322, peakres=1->0.348678, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C9:P1] iters=100->100 [0], model=0->0, peakres=0.127295->0.127295, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C9:P2] iters=100->100 [0], model=0->0, peakres=0.289226->0.289226, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C9:P3] iters=100->100 [0], model=0->0, peakres=0.000342575->0.000342575, Reached cyclethreshold.
+2026-03-19 18:04:11	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity] Total model flux (over all planes) : 6.51292     Peak Residual (over all planes) : 0.34872 in C5:P0
+2026-03-19 18:04:11	INFO	grpcInteractiveCleanManager::mergeCycleExecutionRecord 	Completed 100 iterations.
+2026-03-19 18:04:11	INFO	task_tclean::SynthesisImager::executeMajorCycle 	----------------------------------------------------------- Run Major Cycle 2 -------------------------------------
+2026-03-19 18:04:11	INFO	task_tclean::SynthesisImagerVi2::nSubCubeFitInMemory	Required memory: 0.1511 GB. Available mem.: 14.78 GB (rc, mem. fraction: 80%, memory: -) => Subcubes: 1. Processes on node: 1.
+2026-03-19 18:04:11	INFO	task_tclean::SynthesisImagerVi2::selectData 	MS : sim_single_source_inline.ms | [Opened in readonly mode]
+2026-03-19 18:04:11	INFO	task_tclean::SynthesisImagerVi2::selectData 	  NRows selected : 6318
+2026-03-19 18:04:11	INFO	task_tclean::SynthesisImagerVi2::weight() 	Set imaging weights : Natural weighting
+2026-03-19 18:04:11	INFO	task_tclean::SynthesisImager::executeMajorCycle 	----------------------------------------------------------- Run Major Cycle 2 -------------------------------------
+2026-03-19 18:04:14	INFO	task_tclean::SynthesisDeconvolver::initMinorCycle 	 Absolute Peak residual within mask : 0.348719, over full image : 0.348719
+2026-03-19 18:04:14	INFO	tclean::::casa	Minor Cycle controls : {'cycleniter': 400, 'cyclethreshold': 0.12796498835086823, 'loopgain': 0.10000000149011612, 'nsigma': 0.0, 'thresholdreached': False}
+2026-03-19 18:04:14	INFO	SynthesisDeconvolver::executeCubeMinorCycle 	---------------------------------------------------- Run Minor Cycle Iterations  ---------------------------------------------
+2026-03-19 18:04:14	INFO	SynthesisDeconvolver::setupDeconvolution 	Set Deconvolution Options for [sim_single_source_inline_sanity] : hogbom
+2026-03-19 18:04:14	INFO	SynthesisDeconvolver::initMinorCycle 	 Absolute Peak residual within mask : 0.348719, over full image : 0.348719
+2026-03-19 18:04:14	INFO	CubeMinorCycleAlgorithm::task 	Processing channels in range [0, 9]
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity] Run Hogbom minor-cycle on 10 chans 4 pols | CycleThreshold=0.127965, CycleNiter=400, Gain=0.1
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C0:P0] iters=0->10 [10], model=0.650954->0.877927, peakres=0.348481->0.121508, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C0:P1] iters=10->18 [8], model=0->-0.164691, peakres=0.289169->0.124478, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C0:P2] iters=18->18 [0], model=0->0, peakres=0.127427->0.127427, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C0:P3] iters=18->18 [0], model=0->0, peakres=0.0014802->0.0014802, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C1:P0] iters=18->28 [10], model=0.651346->0.878455, peakres=0.34869->0.121581, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C1:P1] iters=28->36 [8], model=0->-0.164293, peakres=0.288471->0.124177, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C1:P2] iters=36->37 [1], model=0->0.0128994, peakres=0.128994->0.116095, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C1:P3] iters=37->37 [0], model=0->0, peakres=0.000363907->0.000363907, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C2:P0] iters=37->47 [10], model=0.651318->0.878417, peakres=0.348675->0.121576, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C2:P1] iters=47->48 [1], model=0->-0.0130596, peakres=0.130596->0.117537, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C2:P2] iters=48->56 [8], model=0->0.163883, peakres=0.287749->0.123867, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C2:P3] iters=56->56 [0], model=0->0, peakres=0.000349756->0.000349756, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C3:P0] iters=56->66 [10], model=0.651352->0.878464, peakres=0.348694->0.121582, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C3:P1] iters=66->66 [0], model=0->0, peakres=0.0645728->0.0645728, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C3:P2] iters=66->75 [9], model=0->0.18949, peakres=0.309331->0.119841, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C3:P3] iters=75->75 [0], model=0->0, peakres=0.000347341->0.000347341, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C4:P0] iters=75->85 [10], model=0.651327->0.87843, peakres=0.34868->0.121577, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C4:P1] iters=85->91 [6], model=0->0.102039, peakres=0.217772->0.115733, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C4:P2] iters=91->97 [6], model=0->0.10729, peakres=0.228978->0.121688, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C4:P3] iters=97->97 [0], model=0->0, peakres=0.000361898->0.000361898, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C5:P0] iters=97->107 [10], model=0.651399->0.878527, peakres=0.348719->0.121591, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C5:P1] iters=107->116 [9], model=0->0.183678, peakres=0.299843->0.116165, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C5:P2] iters=116->116 [0], model=0->0, peakres=0.0997486->0.0997486, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C5:P3] iters=116->116 [0], model=0->0, peakres=0.000424835->0.000424835, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C6:P0] iters=116->126 [10], model=0.651259->0.878338, peakres=0.348644->0.121565, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C6:P1] iters=126->135 [9], model=0->0.192345, peakres=0.313991->0.121647, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C6:P2] iters=135->135 [0], model=0->0, peakres=0.0355703->0.0355703, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C6:P3] iters=135->135 [0], model=0->0, peakres=0.000374224->0.000374224, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C7:P0] iters=135->145 [10], model=0.651349->0.87846, peakres=0.348692->0.121582, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C7:P1] iters=145->153 [8], model=0->0.157989, peakres=0.277401->0.119412, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C7:P2] iters=153->155 [2], model=0->-0.0287552, peakres=0.151343->0.122588, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C7:P3] iters=155->155 [0], model=0->0, peakres=0.000402347->0.000402347, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C8:P0] iters=155->165 [10], model=0.651298->0.878392, peakres=0.348665->0.121572, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C8:P1] iters=165->170 [5], model=0->0.0858518, peakres=0.209645->0.123793, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C8:P2] iters=170->176 [6], model=0->-0.110787, peakres=0.236442->0.125655, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C8:P3] iters=176->176 [0], model=0->0, peakres=0.000378943->0.000378943, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C9:P0] iters=176->186 [10], model=0.651322->0.878423, peakres=0.348678->0.121576, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C9:P1] iters=186->186 [0], model=0->0, peakres=0.127295->0.127295, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C9:P2] iters=186->194 [8], model=0->-0.164724, peakres=0.289226->0.124502, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C9:P3] iters=194->194 [0], model=0->0, peakres=0.000342575->0.000342575, Reached cyclethreshold.
+2026-03-19 18:04:14	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity] Total model flux (over all planes) : 9.33298     Peak Residual (over all planes) : 0.127427 in C0:P2
+2026-03-19 18:04:14	INFO	grpcInteractiveCleanManager::mergeCycleExecutionRecord 	Completed 294 iterations.
+2026-03-19 18:04:14	INFO	task_tclean::SynthesisImager::executeMajorCycle 	----------------------------------------------------------- Run Major Cycle 3 -------------------------------------
+2026-03-19 18:04:14	INFO	task_tclean::SynthesisImagerVi2::nSubCubeFitInMemory	Required memory: 0.1511 GB. Available mem.: 14.77 GB (rc, mem. fraction: 80%, memory: -) => Subcubes: 1. Processes on node: 1.
+2026-03-19 18:04:14	INFO	task_tclean::SynthesisImagerVi2::selectData 	MS : sim_single_source_inline.ms | [Opened in readonly mode]
+2026-03-19 18:04:14	INFO	task_tclean::SynthesisImagerVi2::selectData 	  NRows selected : 6318
+2026-03-19 18:04:15	INFO	task_tclean::SynthesisImagerVi2::weight() 	Set imaging weights : Natural weighting
+2026-03-19 18:04:15	INFO	task_tclean::SynthesisImager::executeMajorCycle 	----------------------------------------------------------- Run Major Cycle 3 -------------------------------------
+2026-03-19 18:04:20	INFO	task_tclean::SynthesisDeconvolver::initMinorCycle 	 Absolute Peak residual within mask : 0.127427, over full image : 0.127427
+2026-03-19 18:04:20	INFO	tclean::::casa	Minor Cycle controls : {'cycleniter': 206, 'cyclethreshold': 0.04676046222448349, 'loopgain': 0.10000000149011612, 'nsigma': 0.0, 'thresholdreached': False}
+2026-03-19 18:04:20	INFO	SynthesisDeconvolver::executeCubeMinorCycle 	---------------------------------------------------- Run Minor Cycle Iterations  ---------------------------------------------
+2026-03-19 18:04:20	INFO	SynthesisDeconvolver::setupDeconvolution 	Set Deconvolution Options for [sim_single_source_inline_sanity] : hogbom
+2026-03-19 18:04:20	INFO	SynthesisDeconvolver::initMinorCycle 	 Absolute Peak residual within mask : 0.127427, over full image : 0.127427
+2026-03-19 18:04:20	INFO	CubeMinorCycleAlgorithm::task 	Processing channels in range [0, 9]
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity] Run Hogbom minor-cycle on 10 chans 4 pols | CycleThreshold=0.0467605, CycleNiter=206, Gain=0.1
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C0:P0] iters=0->10 [10], model=0.877927->0.957068, peakres=0.121507->0.042367, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C0:P1] iters=10->20 [10], model=-0.164691->-0.245766, peakres=0.124477->0.0434026, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C0:P2] iters=20->30 [10], model=0->-0.0829962, peakres=0.127427->0.0444312, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C0:P3] iters=30->30 [0], model=0->0, peakres=0.00148019->0.00148019, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C1:P0] iters=30->40 [10], model=0.878455->0.957643, peakres=0.12158->0.0423925, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C1:P1] iters=40->50 [10], model=-0.164293->-0.245175, peakres=0.12418->0.043299, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C1:P2] iters=50->59 [9], model=0.0128994->0.084015, peakres=0.116092->0.0449764, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C1:P3] iters=59->59 [0], model=0->0, peakres=0.000363907->0.000363907, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C2:P0] iters=59->69 [10], model=0.878417->0.957602, peakres=0.121575->0.0423907, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C2:P1] iters=69->78 [9], model=-0.0130596->-0.0850583, peakres=0.117534->0.0455349, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C2:P2] iters=78->88 [10], model=0.163883->0.244561, peakres=0.123869->0.0431905, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C2:P3] iters=88->88 [0], model=0->0, peakres=0.000349756->0.000349756, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C3:P0] iters=88->98 [10], model=0.878464->0.957652, peakres=0.121582->0.0423929, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C3:P1] iters=98->102 [4], model=0->0.0222059, peakres=0.0645707->0.0423649, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C3:P2] iters=102->111 [9], model=0.18949->0.262904, peakres=0.119843->0.0464298, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C3:P3] iters=111->111 [0], model=0->0, peakres=0.000347341->0.000347341, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C4:P0] iters=111->121 [10], model=0.87843->0.957615, peakres=0.121577->0.0423912, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C4:P1] iters=121->130 [9], model=0.102039->0.172935, peakres=0.115733->0.0448375, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C4:P2] iters=130->140 [10], model=0.10729->0.186548, peakres=0.121689->0.0424302, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C4:P3] iters=140->140 [0], model=0->0, peakres=0.000361898->0.000361898, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C5:P0] iters=140->150 [10], model=0.878527->0.957721, peakres=0.12159->0.0423959, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C5:P1] iters=150->159 [9], model=0.183678->0.254839, peakres=0.116167->0.0450055, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C5:P2] iters=159->167 [8], model=0->0.0568085, peakres=0.0997458->0.0429373, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C5:P3] iters=167->167 [0], model=0->0, peakres=0.000424835->0.000424835, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C6:P0] iters=167->177 [10], model=0.878338->0.957515, peakres=0.121564->0.0423868, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C6:P1] iters=177->187 [10], model=0.192345->0.271576, peakres=0.121648->0.0424159, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C6:P2] iters=187->187 [0], model=0->0, peakres=0.0355695->0.0355695, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C6:P3] iters=187->187 [0], model=0->0, peakres=0.000374224->0.000374224, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C7:P0] iters=187->197 [10], model=0.87846->0.957649, peakres=0.121581->0.0423927, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C7:P1] iters=197->206 [9], model=0.157989->0.231138, peakres=0.119413->0.0462629, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C7:P2] iters=206->216 [10], model=-0.0287552->-0.108598, peakres=0.122587->0.0427433, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C7:P3] iters=216->216 [0], model=0->0, peakres=0.000402347->0.000402347, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C8:P0] iters=216->226 [10], model=0.878392->0.957574, peakres=0.121572->0.0423894, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C8:P1] iters=226->236 [10], model=0.0858518->0.166481, peakres=0.123794->0.0431642, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C8:P2] iters=236->246 [10], model=-0.110787->-0.192629, peakres=0.125656->0.0438134, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C8:P3] iters=246->246 [0], model=0->0, peakres=0.000378943->0.000378943, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C9:P0] iters=246->256 [10], model=0.878423->0.957608, peakres=0.121576->0.042391, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C9:P1] iters=256->266 [10], model=0->0.0829102, peakres=0.127295->0.0443851, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C9:P2] iters=266->276 [10], model=-0.164724->-0.245815, peakres=0.124502->0.0434112, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity:C9:P3] iters=276->276 [0], model=0->0, peakres=0.000342575->0.000342575, Reached cyclethreshold.
+2026-03-19 18:04:20	INFO	SDAlgorithmBase::deconvolve 	[sim_single_source_inline_sanity] Total model flux (over all planes) : 10.4065     Peak Residual (over all planes) : 0.0464298 in C3:P2
+2026-03-19 18:04:20	INFO	grpcInteractiveCleanManager::mergeCycleExecutionRecord 	Completed 570 iterations.
+2026-03-19 18:04:20	INFO	task_tclean::SynthesisImager::executeMajorCycle 	----------------------------------------------------------- Run Major Cycle 4 -------------------------------------
+2026-03-19 18:04:20	INFO	task_tclean::SynthesisImagerVi2::nSubCubeFitInMemory	Required memory: 0.1511 GB. Available mem.: 14.8 GB (rc, mem. fraction: 80%, memory: -) => Subcubes: 1. Processes on node: 1.
+2026-03-19 18:04:20	INFO	task_tclean::SynthesisImagerVi2::selectData 	MS : sim_single_source_inline.ms | [Opened in readonly mode]
+2026-03-19 18:04:20	INFO	task_tclean::SynthesisImagerVi2::selectData 	  NRows selected : 6318
+2026-03-19 18:04:20	INFO	task_tclean::SynthesisImagerVi2::weight() 	Set imaging weights : Natural weighting
+2026-03-19 18:04:20	INFO	task_tclean::SynthesisImager::executeMajorCycle 	----------------------------------------------------------- Run Major Cycle 4 -------------------------------------
+2026-03-19 18:04:24	INFO	task_tclean::SynthesisDeconvolver::initMinorCycle 	 Absolute Peak residual within mask : 0.0464294, over full image : 0.0464294
+2026-03-19 18:04:24	INFO	tclean::::casa	Reached global stopping criterion : iteration limit
+2026-03-19 18:04:24	INFO	tclean::::casa	getSummary call: fullsummary=False
+2026-03-19 18:04:24	INFO	SDAlgorithmBase::restore 	[sim_single_source_inline_sanity] : Restoring model image.
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 0 : 129.226 arcsec, 76.8918 arcsec, -75.1958 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 0 : 129.226 arcsec, 76.8918 arcsec, -75.1958 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 0 : 129.226 arcsec, 76.8918 arcsec, -75.1958 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 0 : 129.226 arcsec, 76.8918 arcsec, -75.1958 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 1 : 84.3589 arcsec, 73.9439 arcsec, -89.6229 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 1 : 84.3589 arcsec, 73.9439 arcsec, -89.6229 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 1 : 84.3589 arcsec, 73.9439 arcsec, -89.6229 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 1 : 84.3589 arcsec, 73.9439 arcsec, -89.6229 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 2 : 80.6757 arcsec, 70.4193 arcsec, -89.6255 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 2 : 80.6757 arcsec, 70.4193 arcsec, -89.6255 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 2 : 80.6757 arcsec, 70.4193 arcsec, -89.6255 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 2 : 80.6757 arcsec, 70.4193 arcsec, -89.6255 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 3 : 77.0308 arcsec, 67.4835 arcsec, -89.6175 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 3 : 77.0308 arcsec, 67.4835 arcsec, -89.6175 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 3 : 77.0308 arcsec, 67.4835 arcsec, -89.6175 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 3 : 77.0308 arcsec, 67.4835 arcsec, -89.6175 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 4 : 73.8793 arcsec, 64.7111 arcsec, -89.6378 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 4 : 73.8793 arcsec, 64.7111 arcsec, -89.6378 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 4 : 73.8793 arcsec, 64.7111 arcsec, -89.6378 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 4 : 73.8793 arcsec, 64.7111 arcsec, -89.6378 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 5 : 70.9919 arcsec, 62.0069 arcsec, -89.632 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 5 : 70.9919 arcsec, 62.0069 arcsec, -89.632 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 5 : 70.9919 arcsec, 62.0069 arcsec, -89.632 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 5 : 70.9919 arcsec, 62.0069 arcsec, -89.632 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 6 : 68.1803 arcsec, 59.7018 arcsec, -89.6283 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 6 : 68.1803 arcsec, 59.7018 arcsec, -89.6283 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 6 : 68.1803 arcsec, 59.7018 arcsec, -89.6283 deg
+2026-03-19 18:04:24	INFO	SIImageStore::restore 	Beam for chan : 6 : 68.1803 arcsec, 59.7018 arcsec, -89.6283 deg
+2026-03-19 18:04:25	INFO	SIImageStore::restore 	Beam for chan : 7 : 65.7559 arcsec, 57.4863 arcsec, -89.6173 deg
+2026-03-19 18:04:25	INFO	SIImageStore::restore 	Beam for chan : 7 : 65.7559 arcsec, 57.4863 arcsec, -89.6173 deg
+2026-03-19 18:04:25	INFO	SIImageStore::restore 	Beam for chan : 7 : 65.7559 arcsec, 57.4863 arcsec, -89.6173 deg
+2026-03-19 18:04:25	INFO	SIImageStore::restore 	Beam for chan : 7 : 65.7559 arcsec, 57.4863 arcsec, -89.6173 deg
+2026-03-19 18:04:25	INFO	SIImageStore::restore 	Beam for chan : 8 : 63.3697 arcsec, 55.3937 arcsec, -89.6861 deg
+2026-03-19 18:04:25	INFO	SIImageStore::restore 	Beam for chan : 8 : 63.3697 arcsec, 55.3937 arcsec, -89.6861 deg
+2026-03-19 18:04:25	INFO	SIImageStore::restore 	Beam for chan : 8 : 63.3697 arcsec, 55.3937 arcsec, -89.6861 deg
+2026-03-19 18:04:25	INFO	SIImageStore::restore 	Beam for chan : 8 : 63.3697 arcsec, 55.3937 arcsec, -89.6861 deg
+2026-03-19 18:04:25	INFO	SIImageStore::restore 	Beam for chan : 9 : 61.0875 arcsec, 53.5342 arcsec, -89.6226 deg
+2026-03-19 18:04:25	INFO	SIImageStore::restore 	Beam for chan : 9 : 61.0875 arcsec, 53.5342 arcsec, -89.6226 deg
+2026-03-19 18:04:25	INFO	SIImageStore::restore 	Beam for chan : 9 : 61.0875 arcsec, 53.5342 arcsec, -89.6226 deg
+2026-03-19 18:04:25	INFO	SIImageStore::restore 	Beam for chan : 9 : 61.0875 arcsec, 53.5342 arcsec, -89.6226 deg
+2026-03-19 18:04:25	INFO	tclean::::casa	Searching for images with prefix 'sim_single_source_inline_sanity'... Found these, writing history into them: ['sim_single_source_inline_sanity.pb', 'sim_single_source_inline_sanity.psf', 'sim_single_source_inline_sanity.sumwt', 'sim_single_source_inline_sanity.image', 'sim_single_source_inline_sanity.model', 'sim_single_source_inline_sanity.residual', 'sim_single_source_inline_sanity.mask']
+2026-03-19 18:04:25	INFO	tclean::::casa	Task tclean complete. Start time: 2026-03-19 12:04:02.469030 End time: 2026-03-19 12:04:24.784933
+2026-03-19 18:04:25	INFO	tclean::::casa	##### End Task: tclean               #####
+2026-03-19 18:04:25	INFO	tclean::::casa	##########################################
+2026-03-19 18:04:25	INFO	imstat::::casa	##########################################
+2026-03-19 18:04:25	INFO	imstat::::casa	##### Begin Task: imstat             #####
+2026-03-19 18:04:25	INFO	imstat::::casa	imstat( imagename='sim_single_source_inline_sanity.residual', axes=[0, 1], region='', box='', chans='', stokes='', listit=True, verbose=True, mask='', stretch=False, logfile='', append=True, algorithm='classic', fence=-1.0, center='mean', lside=True, zscore=-1.0, maxiter=-1, clmethod='auto', niter=3 )
+2026-03-19 18:04:25	INFO	imstat::CasacRegionManager::fromBCS	No directional region specified. Using full positional plane.
+2026-03-19 18:04:25	INFO	imstat::CasacRegionManager::fromBCS	Using all spectral channels.
+2026-03-19 18:04:25	INFO	imstat::CasacRegionManager::fromBCS	Using polarizations ALL
+2026-03-19 18:04:25	INFO	imstat::image::statistics 	Determining stats for image sim_single_source_inline_sanity.residual
+2026-03-19 18:04:25	INFO	imstat::ImageRegion::fromRecord	Selected bounding box : 
+2026-03-19 18:04:25	INFO	imstat::ImageRegion::fromRecord+	    [0, 0, 0, 0] to [255, 255, 3, 9]  (20:01:18.202, +40.19.02.075, I, 9.9998e+08Hz to 19:57:38.516, +41.00.41.617, V, 1.44997e+09Hz)
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::_logStartup	Statistics calculated using Classic algorithm
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::_logStartup	Regions --- 
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::_logStartup	         -- bottom-left corner (pixel) [blc]:  [0, 0, 0, 0]
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::_logStartup	         -- top-right corner (pixel) [trc]:    [255, 255, 3, 9]
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::_logStartup	         -- bottom-left corner (world) [blcf]: 20:01:18.202, +40.19.02.075, I, 9.9998e+08Hz
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::_logStartup	         -- top-right corner (world) [trcf]:   19:57:38.516, +41.00.41.617, V, 1.44997e+09Hz
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	VELOCITY column unit = km/s
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	Sum column unit = 
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics+	Mean column unit = 
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics+	Std_dev column unit = 
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics+	Minimum column unit = 
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics+	Maximum column unit = 
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	        VELOCITY  VELOCITY(Plane) STOKES  STOKES(Plane) Npts          Sum           Mean          Rms           Std_dev       Minimum       Maximum     
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	      5.96181649                0      I              0  6.553600e+04 -7.624037e+00 -1.163336e-04  2.137147e-03  2.133995e-03 -2.853677e-03  4.236693e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	      5.96181649                0      Q              1  6.553600e+04  7.963870e+00  1.215190e-04  2.164181e-03  2.160783e-03 -4.340248e-02  1.702257e-03
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	      5.96181649                0      U              2  6.553600e+04  8.152603e+00  1.243988e-04  2.215470e-03  2.211992e-03 -4.443109e-02  1.742599e-03
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	      5.96181649                0      V              3  6.553600e+04 -7.244937e-01 -1.105490e-05  3.675101e-04  3.673466e-04 -1.480195e-03  1.332219e-03
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	      -14983.363                1      I              0  6.553600e+04 -7.011651e+00 -1.069893e-04  1.203680e-03  1.198924e-03 -1.294154e-03  4.239248e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	      -14983.363                1      Q              1  6.553600e+04  7.183790e+00  1.096159e-04  1.223934e-03  1.219025e-03 -4.329906e-02  1.207189e-03
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	      -14983.363                1      U              2  6.553600e+04 -7.462585e+00 -1.138700e-04  1.271431e-03  1.266332e-03 -1.254069e-03  4.497939e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	      -14983.363                1      V              3  6.553600e+04 -2.325342e-01 -3.548190e-06  9.220503e-05  9.213744e-05 -3.595468e-04  3.639073e-04
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -29972.6878                2      I              0  6.553600e+04 -6.292904e+00 -9.602209e-05  1.154449e-03  1.150458e-03 -1.305351e-03  4.239061e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -29972.6878                2      Q              1  6.553600e+04  6.630489e+00  1.011732e-04  1.237229e-03  1.233095e-03 -4.553677e-02  1.270270e-03
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -29972.6878                2      U              2  6.553600e+04 -6.288919e+00 -9.596129e-05  1.173490e-03  1.169569e-03 -1.204837e-03  4.319082e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -29972.6878                2      V              3  6.553600e+04  1.114054e-01  1.699911e-06  8.773801e-05  8.772221e-05 -3.437952e-04  3.497564e-04
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -44962.0126                3      I              0  6.553600e+04 -4.946150e+00 -7.547225e-05  1.115899e-03  1.113352e-03 -1.283610e-03  4.239297e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -44962.0126                3      Q              1  6.553600e+04 -4.705419e+00 -7.179899e-05  1.111387e-03  1.109073e-03 -1.177906e-03  4.236590e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -44962.0126                3      U              2  6.553600e+04 -5.156696e+00 -7.868493e-05  1.217986e-03  1.215451e-03 -1.290856e-03  4.642940e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -44962.0126                3      V              3  6.553600e+04  1.677817e-01  2.560146e-06  9.015941e-05  9.012374e-05 -3.223016e-04  3.473405e-04
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -59951.3374                4      I              0  6.553600e+04 -2.448640e+00 -3.736328e-05  1.087646e-03  1.087013e-03 -1.365598e-03  4.239123e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -59951.3374                4      Q              1  6.553600e+04 -2.552172e+00 -3.894305e-05  1.143765e-03  1.143110e-03 -1.249430e-03  4.483857e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -59951.3374                4      U              2  6.553600e+04 -2.415088e+00 -3.685131e-05  1.082347e-03  1.081728e-03 -1.182318e-03  4.243080e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -59951.3374                4      V              3  6.553600e+04 -7.347571e-02 -1.121150e-06  8.546787e-05  8.546117e-05 -3.588835e-04  3.618981e-04
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -74940.6622                5      I              0  6.553600e+04 -8.797984e-01 -1.342466e-05  1.053229e-03  1.053152e-03 -1.228559e-03  4.239590e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -74940.6622                5      Q              1  6.553600e+04 -9.162731e-01 -1.398122e-05  1.113477e-03  1.113398e-03 -1.257155e-03  4.500519e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -74940.6622                5      U              2  6.553600e+04 -8.741661e-01 -1.333872e-05  1.062336e-03  1.062260e-03 -1.199407e-03  4.293810e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -74940.6622                5      V              3  6.553600e+04 -2.634207e-02 -4.019481e-07  9.015755e-05  9.015734e-05 -3.630398e-04  4.248348e-04
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	      -89929.987                6      I              0  6.553600e+04  3.703755e-02  5.651482e-07  1.018925e-03  1.018933e-03 -1.273923e-03  4.238681e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	      -89929.987                6      Q              1  6.553600e+04  1.406475e-01  2.146111e-06  1.017736e-03  1.017742e-03 -1.175288e-03  4.241611e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	      -89929.987                6      U              2  6.553600e+04 -1.178657e-01 -1.798487e-06  8.534429e-04  8.534475e-04 -3.556890e-02  9.855831e-04
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	      -89929.987                6      V              3  6.553600e+04 -5.938239e-02 -9.061034e-07  8.930985e-05  8.930594e-05 -3.742236e-04  3.655640e-04
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -104919.312                7      I              0  6.553600e+04  1.015041e+00  1.548829e-05  9.919983e-04  9.918850e-04 -1.279381e-03  4.239269e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -104919.312                7      Q              1  6.553600e+04  1.152192e+00  1.758106e-05  1.078728e-03  1.078593e-03 -1.288927e-03  4.626246e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -104919.312                7      U              2  6.553600e+04 -1.064555e+00 -1.624383e-05  9.967162e-04  9.965915e-04 -4.274533e-02  1.190951e-03
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -104919.312                7      V              3  6.553600e+04 -9.495433e-02 -1.448888e-06  9.201018e-05  9.199948e-05 -4.023466e-04  3.617560e-04
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -119908.637                8      I              0  6.544700e+04  1.460622e+00  2.231763e-05  9.620837e-04  9.618322e-04 -1.280832e-03  4.238942e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -119908.637                8      Q              1  6.544700e+04  1.526201e+00  2.331965e-05  9.771729e-04  9.769021e-04 -1.204058e-03  4.316421e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -119908.637                8      U              2  6.544700e+04 -1.549119e+00 -2.366982e-05  9.918693e-04  9.915945e-04 -4.381341e-02  1.222182e-03
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -119908.637                8      V              3  6.544700e+04  3.097946e-02  4.733518e-07  8.940486e-05  8.940429e-05 -3.789431e-04  3.778888e-04
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -134897.961                9      I              0  6.505100e+04  1.788776e+00  2.749805e-05  9.373058e-04  9.369095e-04 -1.336328e-03  4.239091e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -134897.961                9      Q              1  6.505100e+04  1.995354e+00  3.067368e-05  9.797345e-04  9.792618e-04 -1.235910e-03  4.438503e-02
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -134897.961                9      U              2  6.505100e+04 -1.951530e+00 -3.000000e-05  9.582363e-04  9.577739e-04 -4.341113e-02  1.208807e-03
+2026-03-19 18:04:25	INFO	imstat::ImageStatsCalculator::statistics	     -134897.961                9      V              3  6.505100e+04 -1.104506e-01 -1.697909e-06  8.885145e-05  8.883590e-05 -3.425755e-04  3.203440e-04
+2026-03-19 18:04:25	INFO	imstat::::casa	Task imstat complete. Start time: 2026-03-19 12:04:24.794322 End time: 2026-03-19 12:04:24.840120
+2026-03-19 18:04:25	INFO	imstat::::casa	##### End Task: imstat               #####
+2026-03-19 18:04:25	INFO	imstat::::casa	##########################################
+2026-03-19 18:04:25	WARN	componentlist::close	componentlist closed

@@ -1,0 +1,42 @@
+2026-03-19 16:55:48	INFO	::casa	
+2026-03-19 16:55:48	INFO	::casa	data_update: version installed or checked less than 1 day(s) ago, nothing updated or checked
+2026-03-19 16:55:48	INFO	::casa	measures_update: version installed or checked less than 1 day(s) ago, nothing updated or checked
+2026-03-19 16:55:48	INFO	::casa	
+2026-03-19 16:55:48	INFO	::casa	Python version 3.12.13
+2026-03-19 16:55:48	INFO	::casa	CASA Version MODULAR 6.7.3.21
+2026-03-19 16:55:48	INFO	readantenna::readantenna::casa	Reading antenna positions from '/home/arpan/.casa/data/alma/simmos/vla.d.cfg'
+2026-03-19 16:55:48	INFO	readantenna::NewMSSimulator::initAnt() 	Using global coordinates for the antennas
+2026-03-19 16:55:48	INFO	readantenna::NewMSSimulator::initAnt() 	Added rows to ANTENNA table
+2026-03-19 16:55:48	INFO	readantenna::MSsimulator::initFeeds() 	Added rows to FEED table
+2026-03-19 16:55:48	INFO	readantenna::MSsimulator::initSpWindows() 	Creating new spectral window LBand, ID 1
+2026-03-19 16:55:48	INFO	readantenna::simulator::settimes()	Times 
+2026-03-19 16:55:48	INFO	readantenna::simulator::settimes()+	     Integration time 2000s
+2026-03-19 16:55:48	INFO	readantenna::simulator::settimes()	     Times will be interpreted as hour angles for first source
+2026-03-19 16:55:48	INFO	readantenna::NewMSSimulator::observe()	First source: src1 @ 19:59:28.50   +40.40.00.00       J2000
+2026-03-19 16:55:48	INFO	readantenna::NewMSSimulator::observe()+	Full time range: 03-Oct-2020/21:18:42.9 -- 04-Oct-2020/07:18:42.9 TAI with int = 2000
+2026-03-19 16:55:48	INFO	readantenna::NewMSSimulator::observe()	Calculating a total of 18 integrations
+2026-03-19 16:55:48	INFO	readantenna::Simulator::reset() 	Resetting all visibility corruption components
+2026-03-19 16:55:48	INFO	readantenna::Simulator::reset() 	Reset all image-plane corruption components
+2026-03-19 16:55:49	INFO	flagdata::::casa	##########################################
+2026-03-19 16:55:49	INFO	flagdata::::casa	##### Begin Task: flagdata           #####
+2026-03-19 16:55:49	INFO	flagdata::::casa	flagdata( vis='sim_faraday_test.ms', mode='unflag', autocorr=False, inpfile='', reason='any', tbuff=0.0, spw='', field='', antenna='', uvrange='', timerange='', correlation='', scan='', intent='', array='', observation='', feed='', clipminmax=[], datacolumn='DATA', clipoutside=True, channelavg=False, chanbin=1, timeavg=False, timebin='0s', clipzeros=False, quackinterval=1.0, quackmode='beg', quackincrement=False, tolerance=0.0, addantenna='', lowerlimit=0.0, upperlimit=90.0, ntime='scan', combinescans=False, timecutoff=4.0, freqcutoff=3.0, timefit='line', freqfit='poly', maxnpieces=7, flagdimension='freqtime', usewindowstats='none', halfwin=1, extendflags=True, winsize=3, timedev='', freqdev='', timedevscale=5.0, freqdevscale=5.0, spectralmax=1000000.0, spectralmin=0.0, antint_ref_antenna='', minchanfrac=0.6, verbose=False, extendpols=True, growtime=50.0, growfreq=50.0, growaround=False, flagneartime=False, flagnearfreq=False, minrel=0.0, maxrel=1.0, minabs=0, maxabs=-1, spwchan=False, spwcorr=False, basecnt=False, fieldcnt=False, name='Summary', action='apply', display='', flagbackup=True, savepars=False, cmdreason='', outfile='', overwrite=True, writeflags=True )
+2026-03-19 16:55:49	INFO	flagdata::::casa	Backup original flags before applying new flags
+2026-03-19 16:55:49	INFO	AgentFlagger::open	Table type is Measurement Set
+2026-03-19 16:55:49	INFO	FlagVersion::saveFlagVersion	Creating new backup flag file called flagdata_1
+2026-03-19 16:55:49	INFO	AgentFlagger::open	Table type is Measurement Set
+2026-03-19 16:55:49	INFO	flagdata::::casa	Unflag mode is active
+2026-03-19 16:55:49	INFO	flagdata::::casa	Initializing the agents
+2026-03-19 16:55:49	INFO	AgentFlagger::initAgents	There are initially 1 agents in the list. Agents: unflag
+2026-03-19 16:55:49	INFO	AgentFlagger::initAgents	There are 1 valid agents in the list. Agents: unflag
+2026-03-19 16:55:49	INFO	flagdata::::casa	Running the agentflagger tool
+2026-03-19 16:55:49	INFO	FlagMSHandler::	Chunk = 1 [progress: 100%], Observation = 0, Array = 0, Scan = 1, Field = 0 (src1), Spw = 0, Channels = 10, Corrs = [ RR RL LR LL ], Total Rows = 6318
+2026-03-19 16:55:49	INFO	Unflag::chunkSummary	=> Data unflagged so far 100% (252720/252720)
+2026-03-19 16:55:49	INFO	FlagMSHandler::nextChunk 	==================================================================================== 
+2026-03-19 16:55:49	INFO	Unflag::tableSummary	=> Percentage of data un-flagged in table selection: 100%
+2026-03-19 16:55:49	INFO	AgentFlagger::run	=> Writing flags to the MS
+2026-03-19 16:55:49	INFO	flagdata::::casa	Task flagdata complete. Start time: 2026-03-19 10:55:48.563985 End time: 2026-03-19 10:55:48.651351
+2026-03-19 16:55:49	INFO	flagdata::::casa	##### End Task: flagdata             #####
+2026-03-19 16:55:49	INFO	flagdata::::casa	##########################################
+2026-03-19 16:55:49	INFO	ImageFactory::createImage	Created Paged image 'sim_faraday_test_skymodel_fromcl.im' of shape [256, 256, 4, 10] with float valued pixels.
+2026-03-19 16:55:49	SEVERE	componentlist::open	Exception Reported: tests/data/polarized_point_source.cl is non existant or is not a componentlist table
+2026-03-19 16:55:49	WARN	componentlist::close	componentlist closed

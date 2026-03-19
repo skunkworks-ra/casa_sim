@@ -105,7 +105,7 @@ def run_single(cfg, stages: Optional[Set[int]] = None) -> dict:
         if _should_run(4):
             log.info("[stage 4] Resolving sky model...")
             from .skymodel import resolve_sky_model
-            sky_model_path = resolve_sky_model(cfg, ia, cl, qa, me)
+            sky_model_path = resolve_sky_model(cfg, ia, cl, qa, me, msname, tb)
 
         # ---- Stage 5: predict --------------------------------------------
         if _should_run(5):

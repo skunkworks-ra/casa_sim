@@ -136,6 +136,23 @@ class CLStokesSpectrum:
 
 
 @dataclass
+class SourceDef:
+    """Inline source definition for building a component list from YAML."""
+    name: str
+    direction: str                     # e.g. "J2000 13h31m08.29s +30d30m32.96s"
+    flux: List[float]                  # [I] or [I,Q,U,V]
+    ref_freq: str                      # e.g. "1.4GHz"
+    spectral_index: List[float] = field(default_factory=lambda: [0.0])  # [alpha] or [alpha, beta]
+    shape: str = 'point'               # point | gaussian | disk
+    major: Optional[str] = None        # e.g. "10arcsec" (gaussian/disk)
+    minor: Optional[str] = None
+    pa: Optional[str] = None           # position angle
+    rm: float = 0.0                    # rotation measure rad/m^2
+    frac_pol: Optional[float] = None   # fractional linear polarization (derives Q,U from I)
+    chi: Optional[float] = None        # EVPA in degrees (used with frac_pol)
+
+
+@dataclass
 class FaradayConfig:
     enabled: bool
     rm_mode: str                       # global | map
@@ -162,6 +179,7 @@ class SkyModelConfig:
     stokes: str                        # I | IQUV
     mode: str                          # component_list | image_native | image_extrapolate
     cl_path: Optional[str] = None
+    sources: Optional[List[SourceDef]] = None   # inline source definitions → auto-builds .cl
     cl_stokes_spectrum: Optional[List[CLStokesSpectrum]] = None
     image_path: Optional[str] = None
     ref_freq: Optional[str] = None     # image_extrapolate
@@ -379,6 +397,36 @@ def _parse_cl_stokes_spectrum(lst: list) -> List[CLStokesSpectrum]:
     return result
 
 
+def _parse_sources(lst: list) -> List[SourceDef]:
+    result = []
+    for s in lst:
+        flux_raw = s.get('flux', [1.0])
+        if isinstance(flux_raw, (int, float)):
+            flux_raw = [float(flux_raw)]
+        else:
+            flux_raw = [float(f) for f in flux_raw]
+        spix_raw = s.get('spectral_index', [0.0])
+        if isinstance(spix_raw, (int, float)):
+            spix_raw = [float(spix_raw)]
+        else:
+            spix_raw = [float(v) for v in spix_raw]
+        result.append(SourceDef(
+            name=_require(s, 'name', 'sources'),
+            direction=_require(s, 'direction', 'sources'),
+            flux=flux_raw,
+            ref_freq=_require(s, 'ref_freq', 'sources'),
+            spectral_index=spix_raw,
+            shape=s.get('shape', 'point'),
+            major=s.get('major'),
+            minor=s.get('minor'),
+            pa=s.get('pa'),
+            rm=float(s.get('rm', 0.0)),
+            frac_pol=float(s['frac_pol']) if s.get('frac_pol') is not None else None,
+            chi=float(s['chi']) if s.get('chi') is not None else None,
+        ))
+    return result
+
+
 def _parse_sky_model(d: dict) -> SkyModelConfig:
     faraday = None
     if 'faraday' in d and d['faraday']:
@@ -387,10 +435,14 @@ def _parse_sky_model(d: dict) -> SkyModelConfig:
     if 'cl_stokes_spectrum' in d and d['cl_stokes_spectrum']:
         cl_ss = _parse_cl_stokes_spectrum(d['cl_stokes_spectrum'])
     lines = _parse_spectral_lines(d.get('spectral_lines') or [])
+    sources = None
+    if 'sources' in d and d['sources']:
+        sources = _parse_sources(d['sources'])
     return SkyModelConfig(
         stokes=d.get('stokes', 'I'),
         mode=_require(d, 'mode', 'sky_model'),
         cl_path=d.get('cl_path'),
+        sources=sources,
         cl_stokes_spectrum=cl_ss,
         image_path=d.get('image_path'),
         ref_freq=d.get('ref_freq'),
@@ -531,6 +583,56 @@ def validate_config(cfg: SimConfig) -> None:
             "sky_model.alpha_value",
             "alpha_value must be a valid image path for alpha_mode=map"
         )
+
+    # ---- Sources (inline component list) -----------------------------------
+
+    if sm.sources and sm.cl_path:
+        raise ConfigError(
+            "sources_and_cl_path_exclusive",
+            "sky_model",
+            "sources and cl_path are mutually exclusive — use one or the other"
+        )
+
+    if sm.sources:
+        if sm.mode != 'component_list':
+            raise ConfigError(
+                "sources_require_component_list_mode",
+                "sky_model.mode",
+                "sources require mode: component_list"
+            )
+        for i, src in enumerate(sm.sources):
+            if len(src.flux) not in (1, 4):
+                raise ConfigError(
+                    "invalid_flux_length",
+                    f"sky_model.sources[{i}].flux",
+                    f"flux must have 1 (I) or 4 (IQUV) elements, got {len(src.flux)}"
+                )
+            if len(src.spectral_index) not in (1, 2):
+                raise ConfigError(
+                    "invalid_spectral_index_length",
+                    f"sky_model.sources[{i}].spectral_index",
+                    f"spectral_index must have 1 (alpha) or 2 (alpha, beta) elements, "
+                    f"got {len(src.spectral_index)}"
+                )
+            if src.frac_pol is not None and len(src.flux) == 4:
+                raise ConfigError(
+                    "frac_pol_with_iquv_flux",
+                    f"sky_model.sources[{i}]",
+                    "frac_pol cannot be used with explicit IQUV flux — use one or the other"
+                )
+            if src.frac_pol is not None and src.chi is None:
+                raise ConfigError(
+                    "frac_pol_requires_chi",
+                    f"sky_model.sources[{i}]",
+                    "chi (EVPA in degrees) is required when frac_pol is specified"
+                )
+            if src.shape in ('gaussian', 'disk'):
+                if not src.major or not src.minor:
+                    raise ConfigError(
+                        "missing_shape_params",
+                        f"sky_model.sources[{i}]",
+                        f"major and minor required for shape={src.shape}"
+                    )
 
     # ---- Faraday ----------------------------------------------------------
 
