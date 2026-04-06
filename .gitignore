@@ -68,3 +68,6 @@ TempLattice*/
 # Generated catalog and plots
 scubed_sources.yaml
 logN_logS.png
+
+# Claude Code project files
+CLAUDE.md
