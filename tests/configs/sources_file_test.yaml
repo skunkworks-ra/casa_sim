@@ -1,4 +1,4 @@
-name: sim_faraday_test
+name: sim_sources_file_test
 
 observatory:
   mode: canned
@@ -13,16 +13,16 @@ observation:
   integration_time: "2000s"
   use_hourangle: true
   fields:
-    - name: src1
+    - name: field1
       direction: "J2000 19h59m28.5s +40d40m00.0s"
   spws:
     - name: LBand
       freq: "1.0GHz"
-      deltafreq: "1GHz"
-      nchan: 128
+      deltafreq: "0.05GHz"
+      nchan: 10
       stokes: "RR RL LR LL"
   observe_calls:
-    - field: src1
+    - field: field1
       spw: LBand
       start_time: "-5.0h"
       stop_time: "+5.0h"
@@ -30,12 +30,8 @@ observation:
 sky_model:
   stokes: IQUV
   mode: component_list
-  cl_path: tests/data/polarized_point_source.cl
-  faraday:
-    enabled: true
-    rm_mode: global
-    rm_value: 50.0
-    ref_freq: "1.25GHz"
+  sources_file: "../../scubed_sources.yaml"
+  flux_cutoff: 1.0e-4
 
 prediction:
   gridder: standard

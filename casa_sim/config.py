@@ -180,6 +180,8 @@ class SkyModelConfig:
     mode: str                          # component_list | image_native | image_extrapolate
     cl_path: Optional[str] = None
     sources: Optional[List[SourceDef]] = None   # inline source definitions → auto-builds .cl
+    sources_file: Optional[str] = None          # path to external YAML with sources list
+    flux_cutoff: Optional[float] = None         # Jy; drop sources fainter than this
     cl_stokes_spectrum: Optional[List[CLStokesSpectrum]] = None
     image_path: Optional[str] = None
     ref_freq: Optional[str] = None     # image_extrapolate
@@ -427,7 +429,30 @@ def _parse_sources(lst: list) -> List[SourceDef]:
     return result
 
 
-def _parse_sky_model(d: dict) -> SkyModelConfig:
+def _load_sources_file(sources_file: str, config_dir: str) -> List[SourceDef]:
+    """Load source definitions from an external YAML file."""
+    path = Path(sources_file)
+    if not path.is_absolute():
+        path = Path(config_dir) / path
+    if not path.exists():
+        raise ConfigError(
+            "sources_file_not_found",
+            "sky_model.sources_file",
+            f"Sources file not found: {path}"
+        )
+    with open(path, "r") as fh:
+        raw = yaml.safe_load(fh)
+    if not isinstance(raw, dict) or "sources" not in raw:
+        raise ConfigError(
+            "invalid_sources_file",
+            "sky_model.sources_file",
+            f"Sources file must contain a top-level 'sources' list: {path}"
+        )
+    log.info("[config] Loaded %d sources from %s", len(raw["sources"]), path)
+    return _parse_sources(raw["sources"])
+
+
+def _parse_sky_model(d: dict, config_dir: str = ".") -> SkyModelConfig:
     faraday = None
     if 'faraday' in d and d['faraday']:
         faraday = _parse_faraday(d['faraday'])
@@ -435,14 +460,31 @@ def _parse_sky_model(d: dict) -> SkyModelConfig:
     if 'cl_stokes_spectrum' in d and d['cl_stokes_spectrum']:
         cl_ss = _parse_cl_stokes_spectrum(d['cl_stokes_spectrum'])
     lines = _parse_spectral_lines(d.get('spectral_lines') or [])
+
     sources = None
+    sources_file = d.get('sources_file')
+    flux_cutoff = d.get('flux_cutoff')
+    if flux_cutoff is not None:
+        flux_cutoff = float(flux_cutoff)
     if 'sources' in d and d['sources']:
         sources = _parse_sources(d['sources'])
+    elif sources_file:
+        sources = _load_sources_file(sources_file, config_dir)
+
+    # Apply flux cutoff
+    if sources and flux_cutoff is not None:
+        n_before = len(sources)
+        sources = [s for s in sources if s.flux[0] >= flux_cutoff]
+        log.info("[config] flux_cutoff=%.2e Jy: kept %d / %d sources",
+                 flux_cutoff, len(sources), n_before)
+
     return SkyModelConfig(
         stokes=d.get('stokes', 'I'),
         mode=_require(d, 'mode', 'sky_model'),
         cl_path=d.get('cl_path'),
         sources=sources,
+        sources_file=sources_file,
+        flux_cutoff=flux_cutoff,
         cl_stokes_spectrum=cl_ss,
         image_path=d.get('image_path'),
         ref_freq=d.get('ref_freq'),
@@ -508,13 +550,14 @@ def load_config(path: str) -> SimConfig:
     Parse a YAML config file into a SimConfig dataclass tree.
     Does NOT validate — call validate_config() separately.
     """
+    config_dir = str(Path(path).resolve().parent)
     with open(path, 'r') as fh:
         raw = yaml.safe_load(fh)
 
     name = _require(raw, 'name', 'root')
     observatory = _parse_observatory(_require(raw, 'observatory', 'root'))
     observation = _parse_observation(_require(raw, 'observation', 'root'))
-    sky_model = _parse_sky_model(_require(raw, 'sky_model', 'root'))
+    sky_model = _parse_sky_model(_require(raw, 'sky_model', 'root'), config_dir)
     prediction = _parse_prediction(_require(raw, 'prediction', 'root'))
     corruption = _parse_corruption(raw.get('corruption', {}))
     imaging = _parse_imaging(raw.get('imaging', {}))
@@ -591,6 +634,13 @@ def validate_config(cfg: SimConfig) -> None:
             "sources_and_cl_path_exclusive",
             "sky_model",
             "sources and cl_path are mutually exclusive — use one or the other"
+        )
+
+    if sm.sources_file and sm.cl_path:
+        raise ConfigError(
+            "sources_file_and_cl_path_exclusive",
+            "sky_model",
+            "sources_file and cl_path are mutually exclusive"
         )
 
     if sm.sources:
@@ -968,7 +1018,8 @@ def expand_sweep(cfg: SimConfig) -> List[SimConfig]:
     )
 
 
-def expand_sweep_from_raw(raw: dict, base_cfg: SimConfig) -> List[SimConfig]:
+def expand_sweep_from_raw(raw: dict, base_cfg: SimConfig,
+                          config_dir: str = ".") -> List[SimConfig]:
     """
     Expand sweep axes from the raw YAML dict.
     Returns list of validated SimConfig instances, one per Cartesian product point.
@@ -987,7 +1038,7 @@ def expand_sweep_from_raw(raw: dict, base_cfg: SimConfig) -> List[SimConfig]:
         for dotpath, value in zip(dotpaths, combo):
             raw_copy = apply_override(raw_copy, dotpath, value)
         # Re-parse the modified raw dict (no file I/O)
-        swept_cfg = _parse_simconfig_from_raw(raw_copy)
+        swept_cfg = _parse_simconfig_from_raw(raw_copy, config_dir)
         validate_config(swept_cfg)
         swept_cfg = derive_imaging_params(swept_cfg)
         configs.append(swept_cfg)
@@ -997,12 +1048,12 @@ def expand_sweep_from_raw(raw: dict, base_cfg: SimConfig) -> List[SimConfig]:
     return configs
 
 
-def _parse_simconfig_from_raw(raw: dict) -> SimConfig:
+def _parse_simconfig_from_raw(raw: dict, config_dir: str = ".") -> SimConfig:
     """Parse a raw dict (as loaded from YAML) into a SimConfig."""
     name = _require(raw, 'name', 'root')
     observatory = _parse_observatory(_require(raw, 'observatory', 'root'))
     observation = _parse_observation(_require(raw, 'observation', 'root'))
-    sky_model = _parse_sky_model(_require(raw, 'sky_model', 'root'))
+    sky_model = _parse_sky_model(_require(raw, 'sky_model', 'root'), config_dir)
     prediction = _parse_prediction(_require(raw, 'prediction', 'root'))
     corruption = _parse_corruption(raw.get('corruption', {}))
     imaging = _parse_imaging(raw.get('imaging', {}))
@@ -1031,12 +1082,13 @@ def load_config_with_sweep(path: str) -> tuple[SimConfig, List[SimConfig], dict]
         (base_cfg, sweep_configs, raw_dict)
         sweep_configs is [base_cfg] if no sweep block.
     """
+    config_dir = str(Path(path).resolve().parent)
     with open(path, 'r') as fh:
         raw = yaml.safe_load(fh)
 
-    base_cfg = _parse_simconfig_from_raw(raw)
+    base_cfg = _parse_simconfig_from_raw(raw, config_dir)
     validate_config(base_cfg)
     base_cfg = derive_imaging_params(base_cfg)
-    sweep_configs = expand_sweep_from_raw(raw, base_cfg)
+    sweep_configs = expand_sweep_from_raw(raw, base_cfg, config_dir)
 
     return base_cfg, sweep_configs, raw

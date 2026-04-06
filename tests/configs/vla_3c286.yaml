@@ -6,8 +6,8 @@ observatory:
   canned:
     telescope: VLA
     cfg_file: null
-    antlist: [W01, W02, W03, W04, E01, E02, E03, E04, N01, N02, N03, N04]
-
+    antlist: 
+    
 observation:
   epoch: "UTC 2024/06/15/06:00:00"
   integration_time: "2000s"
@@ -17,20 +17,32 @@ observation:
       direction: "J2000 13h31m08.2899s +30d30m32.959s"
   spws:
     - name: LBand
-      freq: "1.4GHz"
-      deltafreq: "0.2GHz"
-      nchan: 5
+      freq: "1.0GHz"
+      deltafreq: "0.0078125GHz"
+      nchan: 128
       stokes: "RR RL LR LL"
   observe_calls:
     - field: 3C286
       spw: LBand
-      start_time: "-2.0h"
-      stop_time: "+2.0h"
+      start_time: "1.0h"
+      stop_time: "+1.0h"
 
 sky_model:
   stokes: IQUV
   mode: component_list
-  cl_path: tests/data/3c286_lband.cl
+  sky_model:
+  stokes: IQUV
+  mode: component_list
+  sources:
+    - name: 3C286
+      direction: "J2000 13h31m08.29s +30d30m32.96s"
+      flux: [14.9]                   # [I] or [I, Q, U, V]
+      ref_freq: "1.4GHz"            # per-source reference frequency
+      spectral_index: [0]       # [alpha] or [alpha, beta] (curvature)
+      shape: point                   # point | gaussian | disk
+      rm: 50.0                       # rotation measure (rad/m^2), per-source
+      frac_pol: 0.40                 # fractional linear polarization (derives Q, U from I)
+      chi: 33.0                      # EVPA in degrees (required with frac_pol)
 
 prediction:
   gridder: standard

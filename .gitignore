@@ -48,6 +48,7 @@ outputs/
 .pixi/
 *.egg-info/
 dist/
+build/
 
 # Python
 __pycache__/
@@ -57,3 +58,13 @@ __pycache__/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# CASA runtime logs and temp files
+casa-*.log
+tclean.last
+TempLattice*/
+*.flagversions/
+
+# Generated catalog and plots
+scubed_sources.yaml
+logN_logS.png
