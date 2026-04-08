@@ -37,8 +37,6 @@ prediction:
   gridder: standard
   predictor: tclean
   perchannel: true
-
-imaging:
   cell: "1.0arcsec"
   imsize: 256
 

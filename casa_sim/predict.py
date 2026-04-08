@@ -130,6 +130,8 @@ def _predict_tclean(msname: str, image_path: str, cfg: "SimConfig", tb=None) -> 
     # Remove stale predict outputs to avoid stale state
     os.system('rm -rf sim_predict.*')
 
+    stokes_str = cfg.sky_model.stokes if cfg.sky_model.stokes else 'I'
+
     tclean(
         vis=msname,
         startmodel=image_path,
@@ -137,6 +139,7 @@ def _predict_tclean(msname: str, image_path: str, cfg: "SimConfig", tb=None) -> 
         savemodel='modelcolumn',
         imsize=imsize,
         cell=cell,
+        stokes=stokes_str,
         specmode='cube',
         interpolation='nearest',
         nchan=-1,
@@ -158,13 +161,14 @@ def _predict_tclean_perchannel(msname: str, image_path: str,
                                 cfg: "SimConfig", tb) -> None:
     """
     Per-channel, per-SPW tclean prediction loop.
-    Each iteration runs tclean on a single channel of a single SPW,
-    writing that slice into MODEL_DATA.
+    Each iteration extracts a single-channel slice from the sky model image,
+    then runs tclean on that channel of a single SPW, writing into MODEL_DATA.
     """
-    from casatasks import tclean
+    from casatasks import tclean, imsubimage
 
     cell = cfg.effective_cell
     imsize = cfg.effective_imsize
+    stokes_str = cfg.sky_model.stokes if cfg.sky_model.stokes else 'I'
 
     # Read per-SPW channel counts from the MS
     spw_nchans = _get_spw_nchans(msname, tb)
@@ -176,15 +180,24 @@ def _predict_tclean_perchannel(msname: str, image_path: str,
     for spw_id, nchan in sorted(spw_nchans.items()):
         for chan in range(nchan):
             tag = f'sim_predict_spw{spw_id}_ch{chan}'
-            os.system(f'rm -rf {tag}.*')
+            chan_model = f'{tag}_startmodel.im'
+            os.system(f'rm -rf {tag}.* {chan_model}')
+
+            # Extract single channel from the sky model image
+            imsubimage(
+                imagename=image_path,
+                outfile=chan_model,
+                chans=str(chan),
+            )
 
             tclean(
                 vis=msname,
-                startmodel=image_path,
+                startmodel=chan_model,
                 imagename=tag,
                 savemodel='modelcolumn',
                 imsize=imsize,
                 cell=cell,
+                stokes=stokes_str,
                 specmode='cube',
                 interpolation='nearest',
                 spw=str(spw_id),
@@ -201,8 +214,8 @@ def _predict_tclean_perchannel(msname: str, image_path: str,
                 wprojplanes=1,
             )
 
-            # Clean up per-channel images
-            os.system(f'rm -rf {tag}.*')
+            # Clean up per-channel temp files
+            os.system(f'rm -rf {tag}.* {chan_model}')
             done += 1
             if done % 10 == 0 or done == total:
                 log.info("[predict] perchannel progress: %d / %d", done, total)
