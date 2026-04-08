@@ -93,6 +93,11 @@ def resolve_sky_model(cfg: "SimConfig", ia, cl, qa, me,
         needs_image = (sm_cfg.faraday and sm_cfg.faraday.enabled) or sm_cfg.spectral_lines
         if effective_predictor in ('ft_dft', 'sm_predict') and not needs_image:
             # Use the .cl directly — no image needed
+            if sm_cfg.cl_path is None:
+                raise RuntimeError(
+                    "component_list mode but cl_path is None — "
+                    "config must provide cl_path, sources, or sources_file"
+                )
             log.info("[skymodel] 4a: component_list + %s → returning cl path: %s",
                      effective_predictor, sm_cfg.cl_path)
             if sm_cfg.cl_stokes_spectrum:

@@ -477,6 +477,13 @@ def _parse_sky_model(d: dict, config_dir: str = ".") -> SkyModelConfig:
         sources = [s for s in sources if s.flux[0] >= flux_cutoff]
         log.info("[config] flux_cutoff=%.2e Jy: kept %d / %d sources",
                  flux_cutoff, len(sources), n_before)
+        if not sources:
+            raise ConfigError(
+                "flux_cutoff_removed_all_sources",
+                "sky_model.flux_cutoff",
+                f"flux_cutoff={flux_cutoff} removed all {n_before} sources — "
+                "lower the cutoff or add brighter sources"
+            )
 
     return SkyModelConfig(
         stokes=d.get('stokes', 'I'),
@@ -641,6 +648,13 @@ def validate_config(cfg: SimConfig) -> None:
             "sources_file_and_cl_path_exclusive",
             "sky_model",
             "sources_file and cl_path are mutually exclusive"
+        )
+
+    if sm.mode == 'component_list' and not sm.cl_path and not sm.sources:
+        raise ConfigError(
+            "component_list_no_source",
+            "sky_model",
+            "mode=component_list requires either cl_path, sources, or sources_file"
         )
 
     if sm.sources:
