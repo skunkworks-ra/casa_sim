@@ -38,7 +38,7 @@ prediction:
   predictor: tclean
   perchannel: true
   cell: "1.0arcsec"
-  imsize: 256
+  imsize: 2048
 
 corruption:
   noise:

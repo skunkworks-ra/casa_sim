@@ -57,6 +57,15 @@ def resolve_sky_model(cfg: "SimConfig", ia, cl, qa, me,
     # ---- Pre-step: build .cl from inline sources if provided -------------
 
     if sm_cfg.mode == 'component_list' and sm_cfg.sources and not sm_cfg.cl_path:
+        # Filter sources to image FoV
+        sm_cfg.sources = _filter_sources_by_fov(sm_cfg.sources, cfg, qa)
+        if not sm_cfg.sources:
+            raise RuntimeError(
+                "No sources remain after FoV filter — all sources are outside "
+                f"the image ({cfg.effective_imsize}px × {cfg.effective_cell}). "
+                "Increase imsize or check source directions."
+            )
+
         auto_cl_path = f"{cfg.name}_sources.cl"
         build_component_list(sm_cfg.sources, auto_cl_path, cl)
         sm_cfg.cl_path = auto_cl_path
@@ -260,6 +269,37 @@ def _apply_cl_stokes_spectrum(sm_cfg: "SkyModelConfig", cl) -> None:
 # ---------------------------------------------------------------------------
 # Sub-stage 4a: Build component list from inline sources
 # ---------------------------------------------------------------------------
+
+def _filter_sources_by_fov(sources: list, cfg: "SimConfig", qa) -> list:
+    """
+    Drop sources outside the image FoV defined by cell and imsize.
+    """
+    imsize = cfg.effective_imsize
+    cell_str = cfg.effective_cell
+    if imsize is None or cell_str is None:
+        return sources
+
+    cell_deg = qa.convert(qa.quantity(cell_str), 'deg')['value']
+    hw_deg = (imsize / 2.0) * cell_deg  # half-width in degrees
+
+    first_field = cfg.observation.fields[0]
+    parts = first_field.direction.strip().split()
+    pc_ra_deg = qa.convert(qa.quantity(parts[1]), 'deg')['value']
+    pc_dec_deg = qa.convert(qa.quantity(parts[2]), 'deg')['value']
+    cos_dec = np.cos(np.radians(pc_dec_deg))
+
+    kept = []
+    for src in sources:
+        sparts = src.direction.strip().split()
+        sra = qa.convert(qa.quantity(sparts[1]), 'deg')['value']
+        sdec = qa.convert(qa.quantity(sparts[2]), 'deg')['value']
+        if abs((sra - pc_ra_deg) * cos_dec) <= hw_deg and abs(sdec - pc_dec_deg) <= hw_deg:
+            kept.append(src)
+
+    log.info("[skymodel] FoV filter: kept %d / %d sources (imsize=%d cell=%s)",
+             len(kept), len(sources), imsize, cell_str)
+    return kept
+
 
 def build_component_list(sources: list, cl_path: str, cl) -> None:
     """
