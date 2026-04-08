@@ -1,0 +1,52 @@
+name: sim_scubed_test
+
+observatory:
+  mode: canned
+  feeds: "perfect R L"
+  canned:
+    telescope: VLA
+    cfg_file: null
+    antlist: null
+
+observation:
+  epoch: "UTC 2020/10/4/00:00:00"
+  integration_time: "60s"
+  use_hourangle: true
+  fields:
+    - name: scubed_field
+      direction: "J2000 19h59m28.5s +40d40m00.0s"
+  spws:
+    - name: LBand
+      freq: "1.0GHz"
+      deltafreq: "0.0078125GHz"
+      nchan: 4
+      stokes: "RR RL LR LL"
+  observe_calls:
+    - field: scubed_field
+      spw: LBand
+      start_time: "-0.05h"
+      stop_time: "+0.05h"
+
+sky_model:
+  stokes: IQUV
+  mode: component_list
+  sources_file: "scubed_sources_test.yaml"
+  flux_cutoff: 0.01
+
+prediction:
+  gridder: standard
+  predictor: tclean
+  perchannel: true
+
+imaging:
+  cell: "1.0arcsec"
+  imsize: 256
+
+corruption:
+  noise:
+    enabled: false
+  gains:
+    enabled: false
+
+sanity:
+  enabled: false

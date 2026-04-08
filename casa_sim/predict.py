@@ -66,7 +66,7 @@ def predict(cfg: "SimConfig", msname: str, sky_model_path: str, sm, tb, mstransf
         _predict_sm(msname, sky_model_path, sm)
 
     elif effective_predictor == 'tclean':
-        _predict_tclean(msname, sky_model_path, cfg)
+        _predict_tclean(msname, sky_model_path, cfg, tb)
         _copy_model_to_data(msname, tb, mstransform_fn,
                             init_weight_spectrum=(cfg.corruption.noise.mode == 'per_baseline'))
 
@@ -103,11 +103,14 @@ def _predict_sm(msname: str, model_path: str, sm) -> None:
     log.info("[predict] sm_predict complete: model=%s → %s", model_path, msname)
 
 
-def _predict_tclean(msname: str, image_path: str, cfg: "SimConfig") -> None:
+def _predict_tclean(msname: str, image_path: str, cfg: "SimConfig", tb=None) -> None:
     """
     Predict visibilities using tclean with savemodel='modelcolumn'.
     Writes to MODEL_DATA column.
     Supports all gridders.
+
+    When cfg.prediction.perchannel is True, loops over each SPW and channel
+    individually to avoid memory/convergence issues with large cubes.
     """
     from casatasks import tclean
 
@@ -119,6 +122,10 @@ def _predict_tclean(msname: str, image_path: str, cfg: "SimConfig") -> None:
             "cell and imsize must be set before tclean prediction. "
             "Call derive_imaging_params() first."
         )
+
+    if cfg.prediction.perchannel:
+        _predict_tclean_perchannel(msname, image_path, cfg, tb)
+        return
 
     # Remove stale predict outputs to avoid stale state
     os.system('rm -rf sim_predict.*')
@@ -145,6 +152,75 @@ def _predict_tclean(msname: str, image_path: str, cfg: "SimConfig") -> None:
     )
     log.info("[predict] tclean prediction complete: image=%s gridder=%s → %s",
              image_path, cfg.prediction.gridder, msname)
+
+
+def _predict_tclean_perchannel(msname: str, image_path: str,
+                                cfg: "SimConfig", tb) -> None:
+    """
+    Per-channel, per-SPW tclean prediction loop.
+    Each iteration runs tclean on a single channel of a single SPW,
+    writing that slice into MODEL_DATA.
+    """
+    from casatasks import tclean
+
+    cell = cfg.effective_cell
+    imsize = cfg.effective_imsize
+
+    # Read per-SPW channel counts from the MS
+    spw_nchans = _get_spw_nchans(msname, tb)
+    total = sum(spw_nchans.values())
+    log.info("[predict] perchannel mode: %d SPW(s), %d total channels",
+             len(spw_nchans), total)
+
+    done = 0
+    for spw_id, nchan in sorted(spw_nchans.items()):
+        for chan in range(nchan):
+            tag = f'sim_predict_spw{spw_id}_ch{chan}'
+            os.system(f'rm -rf {tag}.*')
+
+            tclean(
+                vis=msname,
+                startmodel=image_path,
+                imagename=tag,
+                savemodel='modelcolumn',
+                imsize=imsize,
+                cell=cell,
+                specmode='cube',
+                interpolation='nearest',
+                spw=str(spw_id),
+                nchan=1,
+                start=chan,
+                gridder=cfg.prediction.gridder,
+                normtype=cfg.prediction.normtype,
+                wbawp=True,
+                pblimit=0.05,
+                conjbeams=False,
+                calcres=False,
+                calcpsf=True,
+                niter=0,
+                wprojplanes=1,
+            )
+
+            # Clean up per-channel images
+            os.system(f'rm -rf {tag}.*')
+            done += 1
+            if done % 10 == 0 or done == total:
+                log.info("[predict] perchannel progress: %d / %d", done, total)
+
+    log.info("[predict] perchannel tclean complete: image=%s gridder=%s → %s",
+             image_path, cfg.prediction.gridder, msname)
+
+
+def _get_spw_nchans(msname: str, tb) -> dict:
+    """Return dict {spw_id: nchan} from the MS SPECTRAL_WINDOW table."""
+    tb.open(msname + '/SPECTRAL_WINDOW')
+    nrows = tb.nrows()
+    result = {}
+    for i in range(nrows):
+        nch = tb.getcol('NUM_CHAN', startrow=i, nrow=1)[0]
+        result[i] = int(nch)
+    tb.close()
+    return result
 
 
 # ---------------------------------------------------------------------------

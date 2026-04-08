@@ -198,6 +198,7 @@ class PredictionConfig:
     normtype: str                      # flatsky | flatnoise
     cell: Optional[str] = None        # None → derived
     imsize: Optional[int] = None      # None → derived
+    perchannel: bool = False           # tclean: loop one channel at a time
 
 
 @dataclass
@@ -508,7 +509,8 @@ def _parse_prediction(d: dict) -> PredictionConfig:
         predictor=d.get('predictor', 'auto'),
         normtype=d.get('normtype', 'flatsky'),
         cell=d.get('cell'),
-        imsize=d.get('imsize')
+        imsize=d.get('imsize'),
+        perchannel=bool(d.get('perchannel', False)),
     )
 
 
