@@ -150,31 +150,29 @@ def _extract_metrics(cfg: "SimConfig", ia, imstat_fn) -> dict:
     image_path = f"{imagename}.image"
     if os.path.exists(image_path):
         try:
-            ia.open(image_path)
-            pix = ia.getchunk()
-            shp = ia.shape()
-            ia.close()
-
-            # Peak per Stokes in channel 0
             peaks = {}
             stokes_labels = _stokes_labels(cfg.sky_model.stokes)
             for s_idx, label in enumerate(stokes_labels):
-                if s_idx < shp[2]:
-                    peaks[label] = float(np.max(np.abs(pix[:, :, s_idx, 0])))
+                # imstat on stokes+channel slice — no full-cube getchunk needed
+                stat = imstat_fn(image_path, axes=[0, 1],
+                                 stokes=label, chans='0')
+                if stat.get('max'):
+                    peaks[label] = float(np.max(np.abs(stat['max'])))
             metrics['peak_intensity'] = peaks
             log.info("[sanity] Peak intensity chan0: %s", peaks)
 
-            # PB value at peak intensity location
+            # PB value at peak Stokes I pixel — locate via imstat maxpos
             pb_path = f"{imagename}.pb"
             if os.path.exists(pb_path):
-                # Find peak in Stokes I (or first plane)
-                peak_plane = pix[:, :, 0, 0]
-                peak_loc = np.unravel_index(np.argmax(np.abs(peak_plane)), peak_plane.shape)
-                ia.open(pb_path)
-                pb_pix = ia.getchunk()
-                ia.close()
-                metrics['pb_at_peak'] = float(pb_pix[peak_loc[0], peak_loc[1], 0, 0])
-                log.info("[sanity] PB at peak: %.4f", metrics['pb_at_peak'])
+                stat_i = imstat_fn(image_path, stokes='I', chans='0')
+                maxpos = stat_i.get('maxpos', [])
+                if len(maxpos) >= 2:
+                    px, py = int(maxpos[0]), int(maxpos[1])
+                    ia.open(pb_path)
+                    pb_plane = ia.getchunk(blc=[px, py, 0, 0], trc=[px, py, 0, 0])
+                    ia.close()
+                    metrics['pb_at_peak'] = float(pb_plane.flat[0])
+                    log.info("[sanity] PB at peak: %.4f", metrics['pb_at_peak'])
 
         except Exception as e:
             log.warning("[sanity] Image metric extraction failed: %s", e)
@@ -217,25 +215,31 @@ def _estimate_rm(imagename: str, cfg: "SimConfig", ia) -> float:
             f"RM estimation requires stokes=IQUV. Got: {cfg.sky_model.stokes}"
         )
 
-    # IQUV plane order is fixed by FITS/CASA convention: I=0, Q=1, U=2, V=3
     stokes_idx = {'I': 0, 'Q': 1, 'U': 2, 'V': 3}
-
-    ia.open(imagename)
-    pix = ia.getchunk()
-    csys = ia.coordsys()
-    shp = ia.shape()
-    ia.close()
-
     i_idx, q_idx, u_idx = stokes_idx['I'], stokes_idx['Q'], stokes_idx['U']
 
-    # Find peak Stokes I pixel in channel 0
-    stokes_i_chan0 = pix[:, :, i_idx, 0]
-    peak_loc = np.unravel_index(np.argmax(np.abs(stokes_i_chan0)), stokes_i_chan0.shape)
-    px, py = peak_loc
+    # Find peak Stokes I pixel via imstat — avoids loading the full cube
+    from casatasks import imstat as _imstat
+    stat_i = _imstat(imagename, stokes='I', chans='0')
+    maxpos = stat_i.get('maxpos', [])
+    if len(maxpos) < 2:
+        raise ValueError("imstat did not return a valid maxpos for Stokes I")
+    px, py = int(maxpos[0]), int(maxpos[1])
 
-    # Extract Q, U spectra
-    Q_spec = pix[px, py, q_idx, :]
-    U_spec = pix[px, py, u_idx, :]
+    # Read the coordinate system and shape for frequency axis
+    ia.open(imagename)
+    csys = ia.coordsys()
+    shp = ia.shape()
+
+    # Extract Q and U spectra at peak pixel only — one row of the cube
+    nchan = shp[3]
+    nstokes = shp[2]
+    q_spec_col = ia.getchunk(blc=[px, py, q_idx, 0], trc=[px, py, q_idx, nchan - 1])
+    u_spec_col = ia.getchunk(blc=[px, py, u_idx, 0], trc=[px, py, u_idx, nchan - 1])
+    ia.close()
+
+    Q_spec = q_spec_col.ravel()
+    U_spec = u_spec_col.ravel()
 
     # PA per channel — unwrap in 2*PA domain (2π periodicity) to handle nπ ambiguity
     two_PA = np.arctan2(U_spec, Q_spec)       # 2χ, range [-π, π]

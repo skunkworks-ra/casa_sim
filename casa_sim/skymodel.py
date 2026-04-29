@@ -402,46 +402,37 @@ def _apply_spectral_extrapolation(image_path: str, sm_cfg: "SkyModelConfig",
     from .config import _parse_freq_to_hz
 
     ia.open(image_path)
-    pix = ia.getchunk()          # [nx, ny, nstokes, nchan]
     csys = ia.coordsys()
-    shp = ia.shape()
-    ia.close()
+    shp = ia.shape()             # [nx, ny, nstokes, nchan]
+    nx, ny, nstokes, nchan = shp
 
-    chan_freqs = _get_chan_freqs_from_csys(csys, shp[3])
+    chan_freqs = _get_chan_freqs_from_csys(csys, nchan)
     nu0 = _parse_freq_to_hz(sm_cfg.ref_freq)
-
-    # Find reference channel (nearest to ref_freq)
     ref_chan = int(np.argmin(np.abs(chan_freqs - nu0)))
 
-    out_pix = np.zeros_like(pix)
+    # Read only the reference channel — avoids loading the full cube
+    blc_ref = [0, 0, 0, ref_chan]
+    trc_ref = [nx - 1, ny - 1, nstokes - 1, ref_chan]
+    ref_plane = ia.getchunk(blc=blc_ref, trc=trc_ref)  # [nx, ny, nstokes, 1]
+    ia.close()
 
-    if sm_cfg.alpha_mode == 'global':
-        alpha = float(sm_cfg.alpha_value)
-        for stokes_plane in range(shp[2]):
-            for chan in range(shp[3]):
-                scale = (chan_freqs[chan] / nu0) ** alpha
-                out_pix[:, :, stokes_plane, chan] = (
-                    pix[:, :, stokes_plane, ref_chan] * scale
-                )
-    else:  # map
-        # alpha_value is a path to an alpha image [nx, ny, 1, 1] or [nx, ny]
+    if sm_cfg.alpha_mode != 'global':
         ia.open(sm_cfg.alpha_value)
         alpha_map = ia.getchunk()
         ia.close()
-        # Squeeze to [nx, ny]
-        alpha_2d = alpha_map[:, :, 0, 0] if alpha_map.ndim == 4 else alpha_map
+        alpha = alpha_map[:, :, 0, 0] if alpha_map.ndim == 4 else alpha_map
+    else:
+        alpha = float(sm_cfg.alpha_value)
 
-        for stokes_plane in range(shp[2]):
-            for chan in range(shp[3]):
-                scale = (chan_freqs[chan] / nu0) ** alpha_2d
-                out_pix[:, :, stokes_plane, chan] = (
-                    pix[:, :, stokes_plane, ref_chan] * scale
-                )
-
-    # Write output
     os.system(f'rm -rf {out_path}')
-    ia.fromarray(outfile=out_path, pixels=out_pix,
-                 csys=csys.torecord(), overwrite=True)
+    ia.fromshape(out_path, list(shp), csys=csys.torecord(), overwrite=True)
+
+    for chan in range(nchan):
+        scale = (chan_freqs[chan] / nu0) ** alpha   # scalar or [nx,ny]
+        out_plane = ref_plane * scale[..., np.newaxis, np.newaxis] if np.ndim(scale) == 2 \
+                    else ref_plane * scale
+        ia.putchunk(out_plane, blc=[0, 0, 0, chan])
+
     ia.close()
     log.info("[skymodel] Spectral extrapolation complete: ref_chan=%d ref_freq=%.4eHz",
              ref_chan, nu0)
@@ -467,29 +458,25 @@ def _apply_faraday_rotation(image_path: str, sm_cfg: "SkyModelConfig",
     from .config import _parse_freq_to_hz
 
     ia.open(image_path)
-    pix = ia.getchunk()          # [nx, ny, nstokes, nchan]
     csys = ia.coordsys()
-    shp = ia.shape()
-    ia.close()
+    shp = ia.shape()       # [nx, ny, nstokes, nchan]
 
     stokes_idx = _get_stokes_indices_from_csys(csys)
     if 'Q' not in stokes_idx or 'U' not in stokes_idx:
+        ia.close()
         raise ValueError(
             "Faraday rotation requires Q and U Stokes planes. "
             f"Found: {list(stokes_idx.keys())}"
         )
 
     chan_freqs = _get_chan_freqs_from_csys(csys, shp[3])
-
-    # Reference wavelength^2
     nu0 = _parse_freq_to_hz(sm_cfg.faraday.ref_freq)
     lam0_sq = (_C_LIGHT / nu0) ** 2
 
-    # RM: scalar or 2D map
     if sm_cfg.faraday.rm_mode == 'global':
         rm = float(sm_cfg.faraday.rm_value)
     else:
-        ia_tmp = ia.__class__()   # new image tool instance for RM map
+        ia_tmp = ia.__class__()
         ia_tmp.open(sm_cfg.faraday.rm_value)
         rm_arr = ia_tmp.getchunk()
         ia_tmp.close()
@@ -497,26 +484,37 @@ def _apply_faraday_rotation(image_path: str, sm_cfg: "SkyModelConfig",
 
     q_idx = stokes_idx['Q']
     u_idx = stokes_idx['U']
+    nx, ny, nstokes, nchan = shp
 
-    # Apply rotation to a copy — never modify the input image
-    out_pix = pix.copy()
-    for chan in range(shp[3]):
-        lam_sq = (_C_LIGHT / chan_freqs[chan]) ** 2
-        angle = rm * (lam_sq - lam0_sq)   # delta_chi in radians
-
-        Q0 = pix[:, :, q_idx, chan]
-        U0 = pix[:, :, u_idx, chan]
-
-        out_pix[:, :, q_idx, chan] = Q0 * np.cos(2.0 * angle) - U0 * np.sin(2.0 * angle)
-        out_pix[:, :, u_idx, chan] = Q0 * np.sin(2.0 * angle) + U0 * np.cos(2.0 * angle)
-
+    # Create empty output image, then fill channel-by-channel.
+    # Never load the full cube — peak RAM = one channel plane [nx, ny, nstokes, 1].
     os.system(f'rm -rf {out_path}')
-    ia.fromarray(outfile=out_path, pixels=out_pix,
-                 csys=csys.torecord(), overwrite=True)
+    ia.fromshape(out_path, list(shp), csys=csys.torecord(), overwrite=True)
     ia.close()
 
+    ia_in = ia.__class__()
+    ia_in.open(image_path)
+    ia_out = ia.__class__()
+    ia_out.open(out_path)
+
+    for chan in range(nchan):
+        blc = [0, 0, 0, chan]
+        trc = [nx - 1, ny - 1, nstokes - 1, chan]
+        plane = ia_in.getchunk(blc=blc, trc=trc)   # [nx, ny, nstokes, 1]
+
+        lam_sq = (_C_LIGHT / chan_freqs[chan]) ** 2
+        angle = rm * (lam_sq - lam0_sq)
+
+        Q0 = plane[:, :, q_idx, 0].copy()
+        U0 = plane[:, :, u_idx, 0].copy()
+        plane[:, :, q_idx, 0] = Q0 * np.cos(2.0 * angle) - U0 * np.sin(2.0 * angle)
+        plane[:, :, u_idx, 0] = Q0 * np.sin(2.0 * angle) + U0 * np.cos(2.0 * angle)
+        ia_out.putchunk(plane, blc=blc)
+
+    ia_in.close()
+    ia_out.close()
     log.info("[skymodel] Faraday rotation applied: rm_mode=%s ref_freq=%s nchan=%d",
-             sm_cfg.faraday.rm_mode, sm_cfg.faraday.ref_freq, shp[3])
+             sm_cfg.faraday.rm_mode, sm_cfg.faraday.ref_freq, nchan)
 
 
 # ---------------------------------------------------------------------------

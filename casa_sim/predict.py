@@ -19,6 +19,8 @@ import logging
 import os
 from typing import TYPE_CHECKING
 
+import numpy as np
+
 if TYPE_CHECKING:
     from .config import SimConfig
 
@@ -139,9 +141,9 @@ def _predict_tclean(msname: str, image_path: str, cfg: "SimConfig") -> None:
         pblimit=0.05,
         conjbeams=False,
         calcres=False,
-        calcpsf=True,
+        calcpsf=False,   # PSF not needed for model prediction; saves one full cube
         niter=0,
-        wprojplanes=1
+        wprojplanes=1,
     )
     log.info("[predict] tclean prediction complete: image=%s gridder=%s → %s",
              image_path, cfg.prediction.gridder, msname)
@@ -151,21 +153,31 @@ def _predict_tclean(msname: str, image_path: str, cfg: "SimConfig") -> None:
 # Post-prediction data column management
 # ---------------------------------------------------------------------------
 
+_ROWCHUNK = 5000   # rows per chunk for column copy — limits peak RAM
+
+
 def _copy_model_to_data(msname: str, tb, mstransform_fn,
                          init_weight_spectrum: bool = False) -> None:
     """
-    Copy MODEL_DATA → DATA, zero MODEL_DATA.
-    Optionally initialize WEIGHT_SPECTRUM column for per_baseline noise mode.
-
-    Matches the reference notebook copyModelToData() exactly.
+    Copy MODEL_DATA → DATA in row chunks, then zero MODEL_DATA.
+    Chunked to avoid loading the full visibility column into RAM at once.
     """
     tb.open(msname, nomodify=False)
-    moddata = tb.getcol(columnname='MODEL_DATA')
-    tb.putcol(columnname='DATA', value=moddata)
-    moddata.fill(0.0)
-    tb.putcol(columnname='MODEL_DATA', value=moddata)
+    nrows = tb.nrows()
+    zeros = None   # allocated lazily on first chunk to match dtype/shape
+
+    for start in range(0, nrows, _ROWCHUNK):
+        end = min(start + _ROWCHUNK, nrows)
+        nread = end - start
+        chunk = tb.getcol('MODEL_DATA', startrow=start, nrow=nread)
+        tb.putcol('DATA', chunk, startrow=start, nrow=nread)
+        if zeros is None or zeros.shape != chunk.shape:
+            zeros = np.zeros_like(chunk)
+        tb.putcol('MODEL_DATA', zeros[:, :, :nread], startrow=start, nrow=nread)
+
     tb.close()
-    log.info("[predict] MODEL_DATA → DATA copied, MODEL_DATA zeroed: %s", msname)
+    log.info("[predict] MODEL_DATA → DATA copied (chunked, %d rows), MODEL_DATA zeroed: %s",
+             nrows, msname)
 
     if init_weight_spectrum:
         _init_weight_spectrum(msname, mstransform_fn)

@@ -139,13 +139,13 @@ def run_single(cfg, stages: Optional[Set[int]] = None) -> dict:
         return metrics
 
     finally:
-        # Teardown: close all tools to avoid CASA table cache errors
-        _close_tools(ia, cl, sm)
+        # Teardown: close ALL tools to avoid CASA table cache leaks on sweeps
+        _close_tools(ia, cl, sm, tb, me, qa, myms)
 
 
-def _close_tools(ia, cl, sm) -> None:
-    """Safe tool teardown."""
-    for tool, name in [(ia, 'ia'), (cl, 'cl'), (sm, 'sm')]:
+def _close_tools(*tools) -> None:
+    """Safe teardown for any number of CASA tools."""
+    for tool in tools:
         try:
             tool.close()
         except Exception:
