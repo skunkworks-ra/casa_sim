@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install numpy astropy pyyaml pytest
+          pip install -e .
+
+      - name: Run non-CASA tests
+        # CASA-dependent tests (marked @pytest.mark.casa) require casatools
+        # which is a ~2 GB install not suitable for CI.  Run only the unmarked
+        # tests, which cover config validation and unit logic without CASA.
+        run: |
+          pytest tests/test_bug_regression.py -m "not casa" -v
