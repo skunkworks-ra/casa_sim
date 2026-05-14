@@ -91,7 +91,7 @@ def _resolve_freqresolution(spw, qa) -> str:
 
     # deltafreq / nchan — qa arithmetic
     delta_hz = qa.convert(qa.quantity(spw.deltafreq), 'Hz')['value']
-    res_hz = delta_hz / spw.nchan
+    res_hz = delta_hz   # freqresolution == channel width; deltafreq is already per-channel
     # Format with reasonable precision
     if res_hz >= 1e6:
         return f"{res_hz / 1e6:.6g}MHz"

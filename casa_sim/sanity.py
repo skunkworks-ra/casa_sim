@@ -215,9 +215,6 @@ def _estimate_rm(imagename: str, cfg: "SimConfig", ia) -> float:
             f"RM estimation requires stokes=IQUV. Got: {cfg.sky_model.stokes}"
         )
 
-    stokes_idx = {'I': 0, 'Q': 1, 'U': 2, 'V': 3}
-    i_idx, q_idx, u_idx = stokes_idx['I'], stokes_idx['Q'], stokes_idx['U']
-
     # Find peak Stokes I pixel via imstat — avoids loading the full cube
     from casatasks import imstat as _imstat
     stat_i = _imstat(imagename, stokes='I', chans='0')
@@ -230,6 +227,15 @@ def _estimate_rm(imagename: str, cfg: "SimConfig", ia) -> float:
     ia.open(imagename)
     csys = ia.coordsys()
     shp = ia.shape()
+
+    # Read actual stokes axis ordering from the image — never assume IQUV = 0,1,2,3
+    from .skymodel import _get_stokes_indices_from_csys
+    stokes_idx = _get_stokes_indices_from_csys(csys)
+    if 'Q' not in stokes_idx or 'U' not in stokes_idx:
+        ia.close()
+        raise ValueError(f"Image missing Q or U planes. Found: {list(stokes_idx.keys())}")
+    q_idx = stokes_idx['Q']
+    u_idx = stokes_idx['U']
 
     # Extract Q and U spectra at peak pixel only — one row of the cube
     nchan = shp[3]

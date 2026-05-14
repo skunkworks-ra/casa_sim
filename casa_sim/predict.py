@@ -122,19 +122,21 @@ def _predict_tclean(msname: str, image_path: str, cfg: "SimConfig") -> None:
             "Call derive_imaging_params() first."
         )
 
-    # Remove stale predict outputs to avoid stale state
-    os.system('rm -rf sim_predict.*')
+    # Namespaced to cfg.name so sweep runs don't clobber each other
+    predict_name = f'{cfg.name}_predict'
+    os.system(f'rm -rf {predict_name}.*')
 
     tclean(
         vis=msname,
         startmodel=image_path,
-        imagename='sim_predict',
+        imagename=predict_name,
         savemodel='modelcolumn',
         imsize=imsize,
         cell=cell,
         specmode='cube',
         interpolation='nearest',
         nchan=-1,
+        stokes=cfg.sky_model.stokes,
         gridder=cfg.prediction.gridder,
         normtype=cfg.prediction.normtype,
         wbawp=True,

@@ -1,0 +1,56 @@
+name: test_minimal_iquv
+
+observatory:
+  mode: canned
+  feeds: "perfect R L"
+  canned:
+    telescope: VLA
+    cfg_file: null
+    antlist: [W01, W02, W03]
+
+observation:
+  epoch: "UTC 2020/10/4/00:00:00"
+  integration_time: "300s"
+  use_hourangle: true
+  fields:
+    - name: src1
+      direction: "J2000 19h59m28.5s +40d40m00.0s"
+  spws:
+    - name: LBand
+      freq: "1.0GHz"
+      deltafreq: "0.05GHz"
+      nchan: 8
+      stokes: "RR RL LR LL"
+  observe_calls:
+    - field: src1
+      spw: LBand
+      start_time: "-0.5h"
+      stop_time: "+0.5h"
+
+sky_model:
+  stokes: IQUV
+  mode: component_list
+  cl_path: {CL_PATH}
+  faraday:
+    enabled: true
+    rm_mode: global
+    rm_value: 50.0
+    ref_freq: "1.25GHz"
+
+prediction:
+  gridder: standard
+  predictor: sm_predict
+  cell: 2arcsec
+  imsize: 64
+  normtype: flatsky
+
+corruption:
+  seed: 42
+  noise:
+    enabled: false
+    mode: simplenoise
+
+imaging:
+  enabled: true
+  deconvolver: hogbom
+  niter: 100

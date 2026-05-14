@@ -17,9 +17,13 @@ pyyaml     = ">=6.0"
 casa-sim   = { path = ".", editable = true }
 casatools  = ">=6.6"
 casatasks  = ">=6.6"
+pytest     = ">=8.0"
 
 [tasks]
-simulate  = { cmd = "python simulate.py" }
-test      = { cmd = "python tests/run_all.py" }
-test-3c286 = { cmd = "python tests/integration/test_3c286.py" }
-test-vla  = { cmd = "python tests/integration/test_vla_basic.py" }
+simulate     = { cmd = "python simulate.py" }
+test         = { cmd = "python tests/run_all.py" }
+test-3c286   = { cmd = "python tests/integration/test_3c286.py" }
+test-vla     = { cmd = "python tests/integration/test_vla_basic.py" }
+pytest-all   = { cmd = "pytest tests/test_bug_regression.py -v" }
+pytest-casa  = { cmd = "pytest tests/test_bug_regression.py -m casa -v" }
+pytest-fast  = { cmd = "pytest tests/test_bug_regression.py -m 'not casa' -v" }

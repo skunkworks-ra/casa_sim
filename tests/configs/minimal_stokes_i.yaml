@@ -1,0 +1,49 @@
+name: test_minimal_i
+
+observatory:
+  mode: canned
+  feeds: "perfect R L"
+  canned:
+    telescope: VLA
+    cfg_file: null
+    antlist: [W01, W02, W03]
+
+observation:
+  epoch: "UTC 2020/10/4/00:00:00"
+  integration_time: "300s"
+  use_hourangle: true
+  fields:
+    - name: src1
+      direction: "J2000 19h59m28.5s +40d40m00.0s"
+  spws:
+    - name: LBand
+      freq: "1.0GHz"
+      deltafreq: "0.05GHz"
+      nchan: 4
+      stokes: "RR LL"
+  observe_calls:
+    - field: src1
+      spw: LBand
+      start_time: "-0.5h"
+      stop_time: "+0.5h"
+
+sky_model:
+  stokes: I
+  mode: component_list
+  cl_path: {CL_PATH}
+
+prediction:
+  gridder: standard
+  predictor: ft_dft
+  cell: 2arcsec
+  imsize: 64
+  normtype: flatsky
+
+corruption:
+  seed: 42
+  noise:
+    enabled: false
+    mode: simplenoise
+
+imaging:
+  enabled: false

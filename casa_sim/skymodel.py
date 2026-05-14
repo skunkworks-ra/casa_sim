@@ -488,6 +488,7 @@ def _apply_faraday_rotation(image_path: str, sm_cfg: "SkyModelConfig",
 
     # Create empty output image, then fill channel-by-channel.
     # Never load the full cube — peak RAM = one channel plane [nx, ny, nstokes, 1].
+    ia.close()   # must close before fromshape — calling fromshape on an open tool corrupts state
     os.system(f'rm -rf {out_path}')
     ia.fromshape(out_path, list(shp), csys=csys.torecord(), overwrite=True)
     ia.close()
