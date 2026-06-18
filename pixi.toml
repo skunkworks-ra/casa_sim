@@ -31,3 +31,4 @@ pytest-all   = { cmd = "pytest tests/ -v" }
 pytest-casa  = { cmd = "pytest tests/ -m casa -v" }
 pytest-fast  = { cmd = "pytest tests/ -m 'not casa' -v" }
 fetch-trecs  = { cmd = "python tools/fetch_trecs.py" }
+build-morphology = { cmd = "python -c \"from casa_sim.skymodel.morphology_templates import build_template_library; build_template_library('.')\"" }

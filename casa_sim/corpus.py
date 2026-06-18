@@ -82,11 +82,40 @@ _VLA_CONFIG_BMAX_M: dict[str, float] = {
     "D":  1_030.0,
 }
 
-# Absolute paths to VLA cfg files (same location used in trecs_vla_lband_1_2GHz.yaml).
-_VLA_CFG_FILE_TEMPLATE = "/home/pjaganna/.casa/data/alma/simmos/vla.{config}.cfg"
-
 _C_LIGHT = 2.99792458e8   # m/s
 _LBAND_CENTRE_HZ = 1.5e9  # representative L-band centre
+
+
+def _resolve_vla_cfg(vla_config: str) -> str:
+    """Resolve a VLA antenna .cfg path via CASA's data tree (no hardcoded path).
+
+    Uses casatools.ctsys.resolve so the simmos files are found wherever the
+    active CASA data installation lives.
+    """
+    from casatools import ctsys
+    rel = f"alma/simmos/vla.{vla_config.lower()}.cfg"
+    path = ctsys.resolve(rel)
+    if not path or not os.path.exists(path):
+        raise FileNotFoundError(
+            f"VLA cfg file not resolvable: {rel}. "
+            "Ensure CASA simmos data is installed (casaconfig / casadata)."
+        )
+    return path
+
+
+def _trecs_catalog_paths() -> dict:
+    """Return AGN/SFG T-RECS catalog paths from CASA_SIM_TRECS_DIR.
+
+    Defaults to <repo>/data/trecs (the fetch-trecs default destination), so the
+    corpus is portable: no absolute user paths baked in.
+    """
+    default_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)),
+                               "data", "trecs")
+    trecs_dir = os.environ.get("CASA_SIM_TRECS_DIR", default_dir)
+    return {
+        "agn": os.path.join(trecs_dir, "agnsmedi.dat.gz"),
+        "sfg": os.path.join(trecs_dir, "sfgsmedi.dat.gz"),
+    }
 
 
 def _cell_arcsec_for_config(vla_config: str) -> float:
@@ -246,12 +275,7 @@ def _build_simconfig(spec: CorpusFieldSpec, work_dir: str, name: str) -> object:
         validate_config, derive_imaging_params,
     )
 
-    cfg_file = _VLA_CFG_FILE_TEMPLATE.format(config=spec.vla_config.lower())
-    if not os.path.exists(cfg_file):
-        raise FileNotFoundError(
-            f"VLA cfg file not found: {cfg_file}. "
-            f"Check /home/pjaganna/.casa/data/alma/simmos/."
-        )
+    cfg_file = _resolve_vla_cfg(spec.vla_config)
 
     cell_str = f"{spec.cell_arcsec:.4g}arcsec"
 
@@ -291,10 +315,7 @@ def _build_simconfig(spec: CorpusFieldSpec, work_dir: str, name: str) -> object:
     )
 
     trecs = TRecsConfig(
-        catalog_paths={
-            "agn": "/home/pjaganna/Software/radiosharp/data/agnsmedi.dat.gz",
-            "sfg": "/home/pjaganna/Software/radiosharp/data/sfgsmedi.dat.gz",
-        },
+        catalog_paths=_trecs_catalog_paths(),
         flux_floor_jy=1e-5,         # 10 uJy floor: full T-RECS distribution (AGN+SFG)
         flux_floor_col="I1400",
         field_size_arcsec=spec.field_size_arcsec,   # coupled to imsize * cell

@@ -52,6 +52,9 @@ outputs/
 # build_template_library(); sources in data/morphology/tng_raw/ ARE committed.
 data/morphology/lib/
 
+# T-RECS catalogs — fetched via `pixi run fetch-trecs` (multi-GB, not in git)
+data/trecs/
+
 # Smoke-test / corpus run outputs (MS, FITS, logs, CASA images)
 smoketest_output/
 predict_run/

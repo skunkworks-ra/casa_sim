@@ -40,8 +40,10 @@ FLUX_FLOOR_JY = 1e-5          # 10 uJy
 TILE_CENTER   = (0.0, 0.0)    # catalog Euclidean coords are centred at 0,0
 SEED          = 42
 
-AGN_PATH = "/home/pjaganna/Software/radiosharp/data/agnsmedi.dat.gz"
-SFG_PATH = "/home/pjaganna/Software/radiosharp/data/sfgsmedi.dat.gz"
+from casa_sim.corpus import _trecs_catalog_paths
+_TRECS = _trecs_catalog_paths()   # CASA_SIM_TRECS_DIR or <repo>/data/trecs
+AGN_PATH = _TRECS["agn"]
+SFG_PATH = _TRECS["sfg"]
 FLOOR_COL = "I1400"  # mJy in catalog
 
 OUT_PNG = _REPO_ROOT / "data" / "morphology" / "lib" / "full_dist_model.png"
