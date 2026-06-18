@@ -1,6 +1,8 @@
 # MS output files
 *.ms/
 *.ms
+*.ms.flagversions/
+*.ms.flagversions
 
 # CASA image directories
 *.im/
@@ -17,6 +19,8 @@
 *.model
 *.sumwt/
 *.sumwt
+*.mask/
+*.mask
 *.weight/
 *.weight
 
@@ -43,6 +47,15 @@ tests/reference/ms/
 
 # Runtime outputs
 outputs/
+
+# Morphology template library — build artifact, regenerate via
+# build_template_library(); sources in data/morphology/tng_raw/ ARE committed.
+data/morphology/lib/
+
+# Smoke-test / corpus run outputs (MS, FITS, logs, CASA images)
+smoketest_output/
+predict_run/
+casa-*.log
 
 # pixi / packaging
 .pixi/

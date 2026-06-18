@@ -54,6 +54,8 @@ def sanity_image(cfg: "SimConfig", msname: str, ia, imstat_fn) -> dict:
     _run_tclean(cfg, msname)
     metrics = _extract_metrics(cfg, ia, imstat_fn)
     _write_sanity_log(metrics, f"{cfg.name}_sanity.json")
+    if cfg.imaging.export_fits:
+        _export_fits(cfg.name)
 
     log.info("[sanity] Metrics written to %s_sanity.json", cfg.name)
     return metrics
@@ -81,8 +83,15 @@ def _run_tclean(cfg: "SimConfig", msname: str) -> None:
             "Call derive_imaging_params() first."
         )
 
-    total_nchan = sum(s.nchan for s in cfg.observation.spws)
-    specmode = 'mfs' if total_nchan == 1 else 'cube'
+    # Guard band: image a larger grid than the model/predict imsize so the
+    # central source field is surrounded by empty sky and aliased sidelobes do
+    # not wrap.  Dirty/PSF are exported at this size; the model stays smaller.
+    if img.imsize is not None:
+        imsize = img.imsize
+
+    # Default to mfs continuum; cube only when explicitly requested (e.g. RM recovery).
+    specmode = img.specmode or 'mfs'
+    stokes = img.stokes or cfg.sky_model.stokes
 
     # Determine gridder — must match prediction gridder
     gridder = cfg.prediction.gridder
@@ -97,11 +106,11 @@ def _run_tclean(cfg: "SimConfig", msname: str) -> None:
         deconvolver=img.deconvolver,
         niter=img.niter,
         pbcor=img.pbcor,
-        stokes=cfg.sky_model.stokes,
+        stokes=stokes,
         datacolumn='data',
         normtype=cfg.prediction.normtype,
         wbawp=True,
-        pblimit=0.05,
+        pblimit=img.pblimit,
         conjbeams=False,
     )
 
@@ -151,7 +160,11 @@ def _extract_metrics(cfg: "SimConfig", ia, imstat_fn) -> dict:
     if os.path.exists(image_path):
         try:
             peaks = {}
-            stokes_labels = _stokes_labels(cfg.sky_model.stokes)
+            # Use the Stokes actually imaged, not the sky-model Stokes: with an
+            # mfs Stokes-I image the sky model may still be IQUV, and asking
+            # imstat for the absent Q/U/V planes yields a garbage box (INT_MIN trc).
+            image_stokes = cfg.imaging.stokes or cfg.sky_model.stokes
+            stokes_labels = _stokes_labels(image_stokes)
             for s_idx, label in enumerate(stokes_labels):
                 # imstat on stokes+channel slice — no full-cube getchunk needed
                 stat = imstat_fn(image_path, axes=[0, 1],
@@ -180,6 +193,13 @@ def _extract_metrics(cfg: "SimConfig", ia, imstat_fn) -> dict:
     # ---- RM estimate (Faraday runs only) ---------------------------------
     if (cfg.sky_model.faraday and cfg.sky_model.faraday.enabled
             and os.path.exists(image_path)):
+        if (cfg.imaging.specmode or 'mfs') != 'cube':
+            log.warning(
+                "[sanity] RM recovery requested but specmode=%s (not cube): "
+                "MFS collapses the channel axis, so the RM fit across lambda^2 "
+                "is not physically correct. Set imaging.specmode='cube' for RM.",
+                cfg.imaging.specmode or 'mfs',
+            )
         try:
             rm_est = _estimate_rm(image_path, cfg, ia)
             metrics['rm_estimate_rad_per_m2'] = rm_est
@@ -277,6 +297,29 @@ def _write_sanity_log(metrics: dict, log_path: str) -> None:
 # ---------------------------------------------------------------------------
 # Utilities
 # ---------------------------------------------------------------------------
+
+def _export_fits(name: str) -> None:
+    """
+    Export dirty image and PSF to FITS for use by MAD-Clean.
+
+    Writes {name}_dirty.fits and {name}_psf.fits alongside the tclean outputs.
+    The residual image from niter=0 tclean is the true dirty image.
+    """
+    from casatasks import exportfits
+
+    imagename = f"{name}_sanity"
+    pairs = [
+        (f"{imagename}.residual", f"{name}_dirty.fits"),
+        (f"{imagename}.psf",      f"{name}_psf.fits"),
+    ]
+    for casa_img, fits_path in pairs:
+        if os.path.exists(casa_img):
+            exportfits(imagename=casa_img, fitsimage=fits_path,
+                       overwrite=True, dropdeg=True, stokeslast=False)
+            log.info("[sanity] Exported %s → %s", casa_img, fits_path)
+        else:
+            log.warning("[sanity] export_fits: %s not found — skipping", casa_img)
+
 
 def _stokes_labels(stokes_str: str) -> list:
     """Return list of Stokes plane labels for a given sky_model.stokes."""

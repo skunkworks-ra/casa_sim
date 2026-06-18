@@ -1,0 +1,76 @@
+name: trecs_vla_c_1_2GHz
+
+# Full-pol wideband simulation: VLA C-config, 1-2 GHz, IQUV.
+# Sky model painted from T-RECS (AGN + SFG medi catalogs) with per-source
+# RM drawn from U(-100, 100) rad/m^2 and intrinsic angle drawn from U(0, pi).
+# Spectral behavior taken from the T-RECS sampled SED (1000/1400/1900 MHz
+# log-log interpolated to the MS channel grid).
+
+observatory:
+  mode: canned
+  feeds: "perfect R L"
+  canned:
+    telescope: VLA
+    cfg_file: /home/pjaganna/.casa/data/alma/simmos/vla.c.cfg
+
+observation:
+  epoch: "UTC 2026/06/15/03:00:00"
+  integration_time: "10s"
+  use_hourangle: true
+  fields:
+    - name: F1
+      direction: "J2000 12h00m00s +30d00m00s"
+  spws:
+    - name: L_S
+      freq: "1.0GHz"
+      deltafreq: "15.625MHz"
+      nchan: 64
+      stokes: "RR RL LR LL"
+  observe_calls:
+    - field: F1
+      spw: L_S
+      start_time: "-1h"
+      stop_time: "+1h"
+
+sky_model:
+  stokes: IQUV
+  mode: t_recs
+  trecs:
+    catalog_paths:
+      agn: /home/pjaganna/Software/radiosharp/data/agnsmedi.dat.gz
+    readme_path: /home/pjaganna/Software/radiosharp/data/ReadMe
+    flux_floor_jy: 1.0e-4         # 100 microJy at I1400
+    flux_floor_col: I1400
+    field_size_arcsec: 3600.0     # 1 deg square cut
+    tile_center_deg: [2.5, 2.5]   # center of the 25 sq deg T-RECS tile
+    seed: 42
+    spectral:
+      mode: trecs_sed             # use sampled SED; set 'synthetic' to draw spidx
+      ref_freq: 1.4GHz
+      # spidx_dist: {kind: uniform, low: -2.0, high: 2.0}   # used if mode=synthetic
+    polarization:
+      pol_fraction_source: trecs  # P1400/I1400 from catalog (use 'synthetic' + pol_fraction_dist to draw)
+      # Polarization spectral index β: p(ν) = p_ref · (ν/ν_ref)^β at spectral.ref_freq.
+      # Negative β depolarizes with wavelength; 0 = frequency-independent fraction.
+      pol_spidx_dist: {kind: uniform, low: -1.0, high: 0.0}
+      rm_dist:   {kind: uniform, low: -100.0, high: 100.0}
+      chi0_dist: {kind: uniform, low: 0.0,   high: 3.141592653589793}
+
+prediction:
+  gridder: standard
+  predictor: auto                 # → sm_predict for t_recs + standard
+  normtype: flatsky
+  cell: 2arcsec
+  imsize: 1024     # 1024 keeps sm.predict under ~4-6 GB peak on a 64-ch IQUV cube;
+                   # 2048 with full-Stokes wideband can OOM a 32 GB box during predict.
+
+corruption:
+  seed: 42
+  noise:
+    enabled: true
+    mode: tsys-atm                # Tsys-based thermal noise from sm.setnoise
+
+imaging:
+  enabled: true
+  deconvolver: hogbom
+  niter: 500

@@ -8,9 +8,8 @@ Responsibilities:
   - Initialize WEIGHT_SPECTRUM for per_baseline noise mode only
 
 CRITICAL:
-  ft_dft writes directly to DATA column.
-  copyModelToData() MUST NOT be called for ft_dft.
-  This is explicitly guarded below with a comment to prevent future regression.
+  All three predictors write to MODEL_DATA.
+  _copy_model_to_data() must be called after each to populate DATA before corrupt().
 """
 
 from __future__ import annotations
@@ -59,9 +58,9 @@ def predict(cfg: "SimConfig", msname: str, sky_model_path: str, sm, tb, mstransf
     log.info("[predict] Using predictor: %s", effective_predictor)
 
     if effective_predictor == 'ft_dft':
-        # ft_dft writes directly to DATA — DO NOT call copyModelToData() after this
+        # ft writes to MODEL_DATA (usescratch=True); copy to DATA so corrupt() sees the signal
         _predict_ft_dft(msname, sky_model_path)
-        # ^^^ DATA column is already populated. copyModelToData() is intentionally skipped.
+        _copy_model_to_data(msname, tb, mstransform_fn)
 
     elif effective_predictor == 'sm_predict':
         # sm.predict() writes directly to DATA — DO NOT call copyModelToData() after this

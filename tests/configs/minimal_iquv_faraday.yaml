@@ -54,3 +54,4 @@ imaging:
   enabled: true
   deconvolver: hogbom
   niter: 100
+  specmode: cube   # RM recovery fits across lambda^2 — needs per-channel cube

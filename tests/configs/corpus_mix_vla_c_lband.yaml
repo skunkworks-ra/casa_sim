@@ -1,0 +1,81 @@
+name: corpus_mix_vla_c_lband
+
+# corpus_mix example: VLA C-config, L-band, 1-2 GHz.
+# Sky model = T-RECS compact sources (AGN) + extended morphology field.
+# Cell ~2 arcsec/px, imsize 512 px (1024 arcsec field).
+# High flux floor (1 mJy) to keep source count small for quick testing.
+# Extend field_size_arcsec and lower flux_floor_jy for a richer field.
+
+observatory:
+  mode: canned
+  feeds: "perfect R L"
+  canned:
+    telescope: VLA
+    cfg_file: /home/pjaganna/.casa/data/alma/simmos/vla.c.cfg
+
+observation:
+  epoch: "UTC 2026/06/15/03:00:00"
+  integration_time: "10s"
+  use_hourangle: true
+  fields:
+    - name: F1
+      direction: "J2000 12h00m00s +30d00m00s"
+  spws:
+    - name: L_S
+      freq: "1.0GHz"
+      deltafreq: "15.625MHz"
+      nchan: 64
+      stokes: "RR RL LR LL"
+  observe_calls:
+    - field: F1
+      spw: L_S
+      start_time: "-1h"
+      stop_time: "+1h"
+
+sky_model:
+  stokes: IQUV
+  mode: corpus_mix           # T-RECS compact + extended morphology
+  trecs:
+    catalog_paths:
+      agn: /home/pjaganna/Software/radiosharp/data/agnsmedi.dat.gz
+    readme_path: /home/pjaganna/Software/radiosharp/data/ReadMe
+    flux_floor_jy: 1.0e-3   # 1 mJy — keeps source count small for test
+    flux_floor_col: I1400
+    field_size_arcsec: 1024.0   # matches imsize*cell below
+    tile_center_deg: [2.5, 2.5]
+    seed: 42
+    spectral:
+      mode: trecs_sed
+      ref_freq: 1.4GHz
+    polarization:
+      pol_fraction_source: trecs
+      pol_spidx_dist: {kind: uniform, low: -1.0, high: 0.0}
+      rm_dist:   {kind: uniform, low: -100.0, high: 100.0}
+      chi0_dist: {kind: uniform, low: 0.0,   high: 3.141592653589793}
+
+  corpus_morphology:
+    # field_type: null means sample from balance each call.
+    # Set to one of: point_only / diffuse_dominant / central_shell_flow / fully_diffuse
+    # to fix a specific morphology type.
+    field_type: diffuse_dominant
+    # balance: null uses the locked defaults:
+    #   point_only 0.25 / diffuse_dominant 0.32 / central_shell_flow 0.33 / fully_diffuse 0.10
+    balance: null
+    seed: 7                  # independent from trecs.seed
+    repo_root: null          # null → auto-detected from module location
+
+prediction:
+  gridder: standard
+  predictor: auto            # corpus_mix → tclean
+  normtype: flatsky
+  cell: 2arcsec
+  imsize: 512
+
+corruption:
+  seed: 42
+  noise:
+    enabled: false
+    mode: simplenoise
+
+imaging:
+  enabled: false

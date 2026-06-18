@@ -12,6 +12,9 @@ setuptools = ">=75"
 numpy      = ">=1.26"
 astropy    = ">=6.0"
 pyyaml     = ">=6.0"
+scipy      = ">=1.12"
+pillow     = ">=10.0"
+matplotlib = ">=3.8"
 
 [pypi-dependencies]
 casa-sim   = { path = ".", editable = true }
@@ -24,6 +27,7 @@ simulate     = { cmd = "python simulate.py" }
 test         = { cmd = "python tests/run_all.py" }
 test-3c286   = { cmd = "python tests/integration/test_3c286.py" }
 test-vla     = { cmd = "python tests/integration/test_vla_basic.py" }
-pytest-all   = { cmd = "pytest tests/test_bug_regression.py -v" }
-pytest-casa  = { cmd = "pytest tests/test_bug_regression.py -m casa -v" }
-pytest-fast  = { cmd = "pytest tests/test_bug_regression.py -m 'not casa' -v" }
+pytest-all   = { cmd = "pytest tests/ -v" }
+pytest-casa  = { cmd = "pytest tests/ -m casa -v" }
+pytest-fast  = { cmd = "pytest tests/ -m 'not casa' -v" }
+fetch-trecs  = { cmd = "python tools/fetch_trecs.py" }

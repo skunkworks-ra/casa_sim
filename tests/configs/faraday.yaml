@@ -60,3 +60,4 @@ imaging:
   deconvolver: hogbom
   pbcor: false
   niter: 500
+  specmode: cube   # RM recovery fits across lambda^2 — needs per-channel cube
