@@ -73,3 +73,7 @@ __pycache__/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Corpus batch outputs (heavy: MS, FITS, memmap stacks)
+corpus_runs/
+corpus_stacks/

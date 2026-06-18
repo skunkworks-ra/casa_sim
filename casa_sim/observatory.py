@@ -15,6 +15,7 @@ Design constraints:
 from __future__ import annotations
 
 import logging
+import os
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -66,7 +67,14 @@ def _resolve_canned(obs: "ObservatoryConfig", sm, me, mysu, ctsys) -> None:
 
     # --- Locate cfg file ---
     if canned.cfg_file is not None:
-        antennalist = canned.cfg_file
+        antennalist = os.path.expanduser(canned.cfg_file)
+        if not os.path.exists(antennalist):
+            # Fall back to CASA data system (honors CASAPATH/casadata) by basename.
+            fallback = os.path.join(ctsys.resolve("alma/simmos"),
+                                    os.path.basename(antennalist))
+            log.info("[observatory] cfg file %s not found; resolving via casadata: %s",
+                     antennalist, fallback)
+            antennalist = fallback
         log.info("[observatory] Using explicit cfg file: %s", antennalist)
     else:
         antennalist = _default_cfg_file(tel, ctsys)
@@ -115,7 +123,6 @@ def _default_cfg_file(tel: str, ctsys) -> str:
             f"Unknown canned telescope '{tel}'. Known: {list(_cfg_map.keys())}. "
             f"Provide cfg_file explicitly."
         )
-    import os
     return os.path.join(ctsys.resolve("alma/simmos"), _cfg_map[tel].split('/')[-1])
 
 

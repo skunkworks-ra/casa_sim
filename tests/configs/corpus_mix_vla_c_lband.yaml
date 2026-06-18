@@ -11,7 +11,7 @@ observatory:
   feeds: "perfect R L"
   canned:
     telescope: VLA
-    cfg_file: /home/pjaganna/.casa/data/alma/simmos/vla.c.cfg
+    cfg_file: ~/.casa/data/alma/simmos/vla.c.cfg
 
 observation:
   epoch: "UTC 2026/06/15/03:00:00"
@@ -37,8 +37,8 @@ sky_model:
   mode: corpus_mix           # T-RECS compact + extended morphology
   trecs:
     catalog_paths:
-      agn: /home/pjaganna/Software/radiosharp/data/agnsmedi.dat.gz
-    readme_path: /home/pjaganna/Software/radiosharp/data/ReadMe
+      agn: data/trecs/agnsmedi.dat.gz
+    readme_path: data/trecs/ReadMe
     flux_floor_jy: 1.0e-3   # 1 mJy — keeps source count small for test
     flux_floor_col: I1400
     field_size_arcsec: 1024.0   # matches imsize*cell below

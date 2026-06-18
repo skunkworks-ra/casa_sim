@@ -488,14 +488,14 @@ def build_corpus_field(
         psf_candidate = f"{name}_psf.fits"
         model_candidate = _export_model_fits(cfg, name)
 
-        result.dirty_fits = os.path.join(work_dir, dirty_candidate) if os.path.exists(dirty_candidate) else None
-        result.psf_fits = os.path.join(work_dir, psf_candidate) if os.path.exists(psf_candidate) else None
-        # model_candidate may be a relative path (written while cwd=work_dir); resolve it
-        if model_candidate is not None:
-            model_abs = os.path.join(work_dir, os.path.basename(model_candidate))
-            result.model_fits = model_abs if os.path.exists(model_abs) else None
-        else:
-            result.model_fits = None
+        # cwd is work_dir here, so the candidates live in the current directory.
+        # Store ABSOLUTE paths (robust whether work_dir was relative or absolute,
+        # and valid after the finally clause restores the original cwd).
+        result.dirty_fits = os.path.abspath(dirty_candidate) if os.path.exists(dirty_candidate) else None
+        result.psf_fits = os.path.abspath(psf_candidate) if os.path.exists(psf_candidate) else None
+        result.model_fits = (
+            model_candidate if (model_candidate and os.path.exists(model_candidate)) else None
+        )
 
         if result.dirty_fits is None:
             log.warning("[corpus] dirty FITS not found at %s", dirty_candidate)
